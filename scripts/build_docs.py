@@ -89,13 +89,32 @@ def run_step(
     results: list[StepResult],
     *,
     violation_exit: bool = False,
+    timeout_seconds: int = 300,
 ) -> bool:
     command = [cli, *(str(arg) for arg in args)]
-    print(f"[RUN] {name}")
+    print(f"[RUN] {name} (zaman aşımı: {timeout_seconds} sn)", flush=True)
     log.write("\n$ " + subprocess.list2cmdline(command) + "\n")
     log.flush()
     try:
-        completed = subprocess.run(command, text=True, capture_output=True, check=False)
+        completed = subprocess.run(
+            command, text=True, capture_output=True, check=False, timeout=timeout_seconds
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout or ""
+        stderr = exc.stderr or ""
+        if isinstance(stdout, bytes):
+            stdout = stdout.decode("utf-8", errors="replace")
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode("utf-8", errors="replace")
+        if stdout:
+            log.write(stdout)
+        if stderr:
+            log.write("[stderr]\n" + stderr)
+        detail = f"{timeout_seconds} saniyede tamamlanmadı; işlem durduruldu."
+        log.write(f"[TIMEOUT] {detail}\n")
+        results.append(StepResult(name, "HATA", detail))
+        print(f"[ZAMAN AŞIMI] {name}: {detail}")
+        return False
     except OSError as exc:
         detail = str(exc)
         log.write(f"[LAUNCH ERROR] {detail}\n")
@@ -168,24 +187,27 @@ def build(args: argparse.Namespace) -> int:
     failures = 0
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
         log.write(f"KiCad build log\nProject: {project_dir}\nCLI: {cli}\n")
-        run_step(cli, "KiCad sürümü", ["version"], log, results)
+        run_step(cli, "KiCad sürümü", ["version"], log, results, timeout_seconds=args.timeout)
 
         if schematic:
             erc_report = reports_dir / f"{schematic.stem}-erc.rpt"
             run_step(cli, "Şematik ERC", ["sch", "erc", "--severity-all", "--exit-code-violations",
-                     "--output", erc_report, schematic], log, results, violation_exit=True)
+                     "--output", erc_report, schematic], log, results, violation_exit=True,
+                     timeout_seconds=args.timeout)
             run_step(cli, "Şematik PDF", ["sch", "export", "pdf", "--output",
-                     schematic_dir / f"{schematic.stem}-schematic.pdf", schematic], log, results)
+                     schematic_dir / f"{schematic.stem}-schematic.pdf", schematic], log, results,
+                     timeout_seconds=args.timeout)
             run_step(cli, "BOM CSV", ["sch", "export", "bom", "--output",
                      output / f"{schematic.stem}-bom.csv", "--fields",
                      "Reference,Value,Footprint,QUANTITY,DNP", "--labels",
                      "Refs,Value,Footprint,Qty,DNP", "--sort-field", "Reference", "--sort-asc",
-                     schematic], log, results)
+                     schematic], log, results, timeout_seconds=args.timeout)
 
         if board:
             drc_report = reports_dir / f"{board.stem}-drc.rpt"
             run_step(cli, "PCB DRC", ["pcb", "drc", "--severity-all", "--exit-code-violations",
-                     "--output", drc_report, board], log, results, violation_exit=True)
+                     "--output", drc_report, board], log, results, violation_exit=True,
+                     timeout_seconds=args.timeout)
 
             # Export into a fresh staging directory so the ZIP cannot include stale files.
             with tempfile.TemporaryDirectory(prefix="kicad-manufacturing-", dir=output) as temp_name:
@@ -195,11 +217,12 @@ def build(args: argparse.Namespace) -> int:
                 gerber_dir.mkdir()
                 drill_dir.mkdir()
                 run_step(cli, "Gerber dosyaları", ["pcb", "export", "gerbers", "--output",
-                         gerber_dir, "--check-zones", board], log, results)
+                         gerber_dir, "--check-zones", board], log, results,
+                         timeout_seconds=args.timeout)
                 run_step(cli, "Excellon drill ve harita", ["pcb", "export", "drill", "--output",
                          drill_dir, "--excellon-separate-th", "--generate-map", "--map-format", "pdf",
                          "--generate-report", "--report-path", drill_dir / f"{board.stem}-drill.rpt", board],
-                         log, results)
+                         log, results, timeout_seconds=args.timeout)
 
                 archive = output / f"{board.stem}-Gerber-Drill.zip"
                 try:
@@ -217,9 +240,10 @@ def build(args: argparse.Namespace) -> int:
 
             run_step(cli, "Montaj PDF (F.Fab/B.Fab)", ["pcb", "export", "pdf", "--mode-multipage",
                      "--layers", "F.Fab,B.Fab", "--output", assembly_dir / f"{board.stem}-assembly.pdf",
-                     "--check-zones", board], log, results)
+                     "--check-zones", board], log, results, timeout_seconds=args.timeout)
             run_step(cli, "3D STEP modeli", ["pcb", "export", "step", "--force", "--subst-models",
-                     "--output", model_dir / f"{board.stem}.step", board], log, results)
+                     "--output", model_dir / f"{board.stem}.step", board], log, results,
+                     timeout_seconds=args.timeout)
 
     failures += sum(1 for result in results if result.status == "HATA")
     findings = [result for result in results if result.status == "BULGU"]
@@ -248,6 +272,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--board", help="Kullanılacak .kicad_pcb dosyası; göreli yollar proje köküne göredir.")
     parser.add_argument("--kicad-cli", help="kicad-cli çalıştırılabilir dosyasının yolu.")
     parser.add_argument("--output-dir", type=Path, help="Çıktı dizini (varsayılan: <proje>/manufacturing).")
+    parser.add_argument("--timeout", type=int, default=300,
+                        help="Her kicad-cli komutu için saniye cinsinden sınır (varsayılan: 300).")
     return parser.parse_args(argv)
 
 
