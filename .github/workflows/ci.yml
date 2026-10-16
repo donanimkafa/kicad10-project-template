@@ -1,38 +1,66 @@
-name: 'KiCad 10 Automation Pipeline'
+name: KiCad 10 Automation Pipeline
 
 on:
   push:
-    branches: [ main, dev ]
-    tags: [ 'v*' ]
+    branches: [main, dev]
+    tags: ['v*']
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   build-documentation:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     container:
-      image: kicad/kicad:10.0  # KiCad 10 resmi Docker imajı
+      image: kicad/kicad:10.0
+      options: --user root
+      env:
+        HOME: /home/kicad
 
     steps:
-      - name: 'Checkout Repository'
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 'Run Custom Python Automation Script'
+      - name: Run KiCad automation
+        id: build
+        continue-on-error: true
         run: python3 scripts/build_docs.py
 
-      - name: 'Upload Manufacturing Artifacts'
+      - name: Upload manufacturing artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: KiCad-10-Manufacturing-Outputs
           path: manufacturing/
+          if-no-files-found: warn
 
-      - name: 'Create GitHub Release on Tag'
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Mark build failed when automation reports errors
+        if: steps.build.outcome == 'failure'
+        run: exit 1
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build-documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download manufacturing artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: KiCad-10-Manufacturing-Outputs
+          path: manufacturing
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            manufacturing/fabrication/*.zip
+            manufacturing/*-Gerber-Drill.zip
             manufacturing/schematic/*.pdf
             manufacturing/assembly/*.pdf
-            manufacturing/assembly/*.step
-            manufacturing/assembly/*.csv
+            manufacturing/3d/*.step
+            manufacturing/*-bom.csv
