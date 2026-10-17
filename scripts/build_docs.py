@@ -197,11 +197,12 @@ def build(args: argparse.Namespace) -> int:
             run_step(cli, "Şematik PDF", ["sch", "export", "pdf", "--output",
                      schematic_dir / f"{schematic.stem}-schematic.pdf", schematic], log, results,
                      timeout_seconds=args.timeout)
+            # KiCad's default BOM fields are Reference, Value, Footprint,
+            # QUANTITY, and DNP. Rely on those defaults to avoid version- or
+            # locale-specific field/label parsing issues.
             run_step(cli, "BOM CSV", ["sch", "export", "bom", "--output",
-                     output / f"{schematic.stem}-bom.csv", "--fields",
-                     "Reference,Value,Footprint,QUANTITY,DNP", "--labels",
-                     "Refs,Value,Footprint,Qty,DNP", "--sort-field", "Reference", "--sort-asc",
-                     schematic], log, results, timeout_seconds=args.timeout)
+                     output / f"{schematic.stem}-bom.csv", schematic], log, results,
+                     timeout_seconds=args.timeout)
 
         if board:
             drc_report = reports_dir / f"{board.stem}-drc.rpt"
