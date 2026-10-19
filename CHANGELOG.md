@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 This project follows [Semantic Versioning](https://semver.org/) and the
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
-Company: Your Company Name
+Company: Donanimkafa
 
 ## [Unreleased]
 
