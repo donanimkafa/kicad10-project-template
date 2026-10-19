@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
-"""Build KiCad lifecycle deliverables with the KiCad CLI."""
+"""Build KiCad ERC/DRC reports and manufacturing deliverables.
+
+Run this from any directory with:
+    python scripts/build_docs.py
+
+By default the project root is the parent directory of this script. Only files
+directly in the project root are auto-detected; this avoids picking up backups
+or generated files in output folders.
+"""
 
 from __future__ import annotations
 
 import argparse
-import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -15,15 +21,6 @@ import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
-
-try:  # Support both direct script execution and importing in tests/tools.
-    from .update_title_block import update_title_blocks
-except ImportError:
-    from update_title_block import update_title_blocks
-
-
-PHASES = ("draft", "preliminary", "checked", "release")
-PHASE_MARKER_RE = re.compile(r"\bPHASE\s*:\s*([A-Za-z0-9_-]*)", re.IGNORECASE)
 
 
 @dataclass
@@ -34,7 +31,7 @@ class StepResult:
 
 
 def find_kicad_cli() -> str | None:
-    """Find kicad-cli on PATH or common platform install locations."""
+    """Find kicad-cli on PATH or in common platform install locations."""
     executable = "kicad-cli.exe" if os.name == "nt" else "kicad-cli"
     on_path = shutil.which(executable) or shutil.which("kicad-cli")
     if on_path:
@@ -44,10 +41,8 @@ def find_kicad_cli() -> str | None:
     if sys.platform == "darwin":
         candidates.append(Path("/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"))
     elif os.name == "nt":
-        for base in (
-            Path(os.environ.get("ProgramFiles", r"C:\Program Files")),
-            Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")),
-        ):
+        for base in (Path(os.environ.get("ProgramFiles", r"C:\Program Files")),
+                     Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"))):
             candidates.extend(base.glob("KiCad/*/bin/kicad-cli.exe"))
     else:
         candidates.extend((Path("/usr/bin/kicad-cli"), Path("/usr/local/bin/kicad-cli")))
@@ -67,87 +62,23 @@ def resolve_input(value: str | None, project_dir: Path, suffix: str, label: str)
         return path
 
     candidates = sorted(
-        (p for p in project_dir.iterdir() if p.is_file() and p.suffix.lower() == suffix),
-        key=lambda p: p.name.casefold(),
+        (path for path in project_dir.iterdir()
+         if path.is_file() and path.suffix.lower() == suffix),
+        key=lambda path: path.name.casefold(),
     )
     if not candidates:
         return None
     if len(candidates) == 1:
         return candidates[0]
+
+    # A common project basename is a safe tie-breaker when several files exist.
     for candidate in candidates:
         if candidate.stem.casefold() == project_dir.name.casefold():
             return candidate
-    choices = "\n  ".join(p.name for p in candidates)
-    raise ValueError(f"Birden fazla {label} dosyası bulundu. --{label} ile seçim yapın:\n  {choices}")
-
-
-def detect_phase(schematic: Path, project_dir: Path) -> str:
-    """Read PHASE from a schematic comment or KiCad project text variable."""
-    try:
-        text = schematic.read_text(encoding="utf-8-sig")
-    except UnicodeDecodeError as exc:
-        raise ValueError(f"Şematik UTF-8 olarak okunamadı: {schematic}") from exc
-
-    schematic_phases = [match.group(1).lower() for match in PHASE_MARKER_RE.finditer(text)]
-
-    # KiCad's custom text-variable table is stored in the sibling .kicad_pro
-    # JSON file, while a Page Settings comment is serialized in .kicad_sch.
-    # Support both UI entry points so engineers can choose either one.
-    matching_project = schematic.with_suffix(".kicad_pro")
-    if matching_project.is_file():
-        project_files = [matching_project]
-    else:
-        project_files = sorted(project_dir.glob("*.kicad_pro"))
-        if len(project_files) > 1:
-            raise ValueError(
-                "PHASE text variable için birden fazla .kicad_pro dosyası var; "
-                "şematikle aynı ada sahip proje dosyası gerekli."
-            )
-    project_phases: list[str] = []
-    for project_file in project_files[:1]:
-        if not project_file.is_file():
-            continue
-        try:
-            project_data = json.loads(project_file.read_text(encoding="utf-8-sig"))
-        except (OSError, json.JSONDecodeError, UnicodeDecodeError) as exc:
-            raise ValueError(f"KiCad proje ayarları okunamadı: {project_file}: {exc}") from exc
-        variables = project_data.get("text_variables", {})
-        if isinstance(variables, dict):
-            for name, value in variables.items():
-                if str(name).casefold() == "phase":
-                    variable_value = str(value).strip()
-                    embedded_marker = PHASE_MARKER_RE.search(variable_value)
-                    project_phases.append(
-                        embedded_marker.group(1).lower() if embedded_marker else variable_value.lower()
-                    )
-
-    matches = schematic_phases + project_phases
-    if not matches:
-        print("[INFO] Şematikte veya proje Text Variables alanında PHASE bulunamadı; varsayılan 'checked' kullanılacak.")
-        return "checked"
-
-    invalid = sorted(set(matches) - set(PHASES))
-    if invalid:
-        raise ValueError(
-            f"Şematikte geçersiz PHASE değeri: {', '.join(invalid)}. "
-            f"Kullanılabilir değerler: {', '.join(PHASES)}."
-        )
-    unique = set(matches)
-    if len(unique) > 1:
-        raise ValueError(
-            "Şematik ve/veya KiCad proje ayarlarında birden fazla farklı PHASE değeri bulundu: "
-            + ", ".join(sorted(unique))
-            + ". Tek bir aşama belirtin."
-        )
-    return matches[0]
-
-
-def write_phase_output(phase: str) -> None:
-    """Expose the detected phase to later GitHub Actions jobs, when applicable."""
-    output_path = os.environ.get("GITHUB_OUTPUT")
-    if output_path:
-        with Path(output_path).open("a", encoding="utf-8", newline="\n") as output:
-            output.write(f"phase={phase}\n")
+    choices = "\n  ".join(str(path.name) for path in candidates)
+    raise ValueError(
+        f"Birden fazla {label} dosyası bulundu. --{label} ile seçim yapın:\n  {choices}"
+    )
 
 
 def run_step(
@@ -158,7 +89,6 @@ def run_step(
     results: list[StepResult],
     *,
     violation_exit: bool = False,
-    ignore_violation: bool = False,
     timeout_seconds: int = 300,
 ) -> bool:
     command = [cli, *(str(arg) for arg in args)]
@@ -170,7 +100,8 @@ def run_step(
             command, text=True, capture_output=True, check=False, timeout=timeout_seconds
         )
     except subprocess.TimeoutExpired as exc:
-        stdout, stderr = exc.stdout or "", exc.stderr or ""
+        stdout = exc.stdout or ""
+        stderr = exc.stderr or ""
         if isinstance(stdout, bytes):
             stdout = stdout.decode("utf-8", errors="replace")
         if isinstance(stderr, bytes):
@@ -205,15 +136,11 @@ def run_step(
         results.append(StepResult(name, "OK"))
         print(f"[OK]  {name}")
         return True
-    # KiCad 10 uses exit code 5 when ERC/DRC violations are present.
     if violation_exit and completed.returncode == 5:
-        detail = "ERC/DRC bulguları bulundu; raporu inceleyin."
+        detail = "ERC/DRC ihlalleri bulundu; raporu inceleyin."
         results.append(StepResult(name, "BULGU", detail))
-        if ignore_violation:
-            print(f"[UYARI] {name}: {detail} Derleme devam ediyor.")
-            return True
-        print(f"[HATA] {name}: {detail} Bu aşamada derleme durduruluyor.")
-        return False
+        print(f"[UYARI] {name}: {detail}")
+        return True
 
     detail = f"kicad-cli çıkış kodu: {completed.returncode}"
     results.append(StepResult(name, "HATA", detail))
@@ -234,42 +161,16 @@ def build(args: argparse.Namespace) -> int:
         print(f"Hata: {exc}", file=sys.stderr)
         return 2
 
-    if schematic is None:
-        print(f"{project_dir} içinde .kicad_sch bulunamadı; tüm aşamalar şematik gerektirir.", file=sys.stderr)
+    if schematic is None and board is None:
+        print(f"{project_dir} içinde kök seviyede .kicad_sch veya .kicad_pcb bulunamadı.", file=sys.stderr)
         return 2
-    try:
-        phase = detect_phase(schematic, project_dir)
-    except (OSError, ValueError) as exc:
-        print(f"PHASE bilgisi okunamadı: {exc}", file=sys.stderr)
-        return 2
-    print(f"[INFO] Şematikten seçilen aşama: {phase}")
-    write_phase_output(phase)
-
-    if phase != "draft" and board is None:
-        print(f"{phase} aşaması için kök dizinde .kicad_pcb dosyası gerekli.", file=sys.stderr)
-        return 2
-
-    title_block_files = [schematic]
-    if board is not None:
-        title_block_files.append(board)
-    try:
-        metadata = update_title_blocks(
-            project_dir,
-            title_block_files,
-            changelog=args.changelog,
-            company=args.company,
-        )
-    except (OSError, ValueError) as exc:
-        print(f"Başlık bloğu güncellenemedi: {exc}", file=sys.stderr)
-        return 2
-    print(f"Başlık bloğu metadata kaynağı: {metadata.source}; revizyon {metadata.revision}.")
 
     cli = args.kicad_cli or find_kicad_cli()
     if not cli:
         print("kicad-cli bulunamadı. PATH'e ekleyin veya --kicad-cli ile yolunu belirtin.", file=sys.stderr)
         return 2
 
-    output = Path(args.output_dir).expanduser() if args.output_dir else project_dir / "manufacturing"
+    output = (Path(args.output_dir).expanduser() if args.output_dir else project_dir / "manufacturing")
     if not output.is_absolute():
         output = project_dir / output
     output = output.resolve()
@@ -277,80 +178,56 @@ def build(args: argparse.Namespace) -> int:
     schematic_dir = output / "schematic"
     assembly_dir = output / "assembly"
     model_dir = output / "3d"
+    output.mkdir(parents=True, exist_ok=True)
     for directory in (reports_dir, schematic_dir, assembly_dir, model_dir):
         directory.mkdir(parents=True, exist_ok=True)
 
     log_path = reports_dir / "build.log"
     results: list[StepResult] = []
-    ignore_error = phase == "preliminary"
-    strict_checks = phase in ("checked", "release")
-
+    failures = 0
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
-        log.write(f"KiCad build log\nPhase: {phase}\nProject: {project_dir}\nCLI: {cli}\n")
-        log.write(f"KiCad version: {args.kicad_version or 'container/local default'}\n")
+        log.write(f"KiCad build log\nProject: {project_dir}\nCLI: {cli}\n")
+        run_step(cli, "KiCad sürümü", ["version"], log, results, timeout_seconds=args.timeout)
 
-        # Draft produces only schematic PDF and BOM; no ERC/DRC or PCB outputs.
-        if phase != "draft":
+        if schematic:
             erc_report = reports_dir / f"{schematic.stem}-erc.rpt"
-            if not run_step(
-                cli, "Şematik ERC",
-                ["sch", "erc", "--severity-all", "--exit-code-violations", "--output", erc_report, schematic],
-                log, results, violation_exit=True, ignore_violation=ignore_error,
-                timeout_seconds=args.timeout,
-            ):
-                return finish(results, output, log_path, strict_checks)
+            run_step(cli, "Şematik ERC", ["sch", "erc", "--severity-all", "--exit-code-violations",
+                     "--output", erc_report, schematic], log, results, violation_exit=True,
+                     timeout_seconds=args.timeout)
+            run_step(cli, "Şematik PDF", ["sch", "export", "pdf", "--output",
+                     schematic_dir / f"{schematic.stem}-schematic.pdf", schematic], log, results,
+                     timeout_seconds=args.timeout)
+            # KiCad's default BOM fields are Reference, Value, Footprint,
+            # QUANTITY, and DNP. Rely on those defaults to avoid version- or
+            # locale-specific field/label parsing issues.
+            run_step(cli, "BOM CSV", ["sch", "export", "bom", "--output",
+                     output / f"{schematic.stem}-bom.csv", schematic], log, results,
+                     timeout_seconds=args.timeout)
 
-            assert board is not None
+        if board:
             drc_report = reports_dir / f"{board.stem}-drc.rpt"
-            if not run_step(
-                cli, "PCB DRC",
-                ["pcb", "drc", "--severity-all", "--exit-code-violations", "--output", drc_report, board],
-                log, results, violation_exit=True, ignore_violation=ignore_error,
-                timeout_seconds=args.timeout,
-            ):
-                return finish(results, output, log_path, strict_checks)
+            run_step(cli, "PCB DRC", ["pcb", "drc", "--severity-all", "--exit-code-violations",
+                     "--output", drc_report, board], log, results, violation_exit=True,
+                     timeout_seconds=args.timeout)
 
-        # Every phase includes schematic PDF and BOM.
-        if not run_step(
-            cli, "Şematik PDF",
-            ["sch", "export", "pdf", "--output", schematic_dir / f"{schematic.stem}-schematic.pdf", schematic],
-            log, results, timeout_seconds=args.timeout,
-        ):
-            return finish(results, output, log_path, strict_checks)
-
-        if not run_step(
-            cli, "BOM CSV",
-            ["sch", "export", "bom", "--output", output / f"{schematic.stem}-bom.csv", schematic],
-            log, results, timeout_seconds=args.timeout,
-        ):
-            return finish(results, output, log_path, strict_checks)
-
-        if phase != "draft":
-            assert board is not None
+            # Export into a fresh staging directory so the ZIP cannot include stale files.
             with tempfile.TemporaryDirectory(prefix="kicad-manufacturing-", dir=output) as temp_name:
                 staging = Path(temp_name)
-                gerber_dir, drill_dir = staging / "gerbers", staging / "drill"
+                gerber_dir = staging / "gerbers"
+                drill_dir = staging / "drill"
                 gerber_dir.mkdir()
                 drill_dir.mkdir()
-                gerbers_ok = run_step(
-                    cli, "Gerber dosyaları",
-                    ["pcb", "export", "gerbers", "--output", gerber_dir, "--check-zones", board],
-                    log, results, timeout_seconds=args.timeout,
-                )
-                drill_ok = run_step(
-                    cli, "Excellon drill ve harita",
-                    ["pcb", "export", "drill", "--output", drill_dir, "--excellon-separate-th",
-                     "--generate-map", "--map-format", "pdf", "--generate-report", "--report-path",
-                     drill_dir / f"{board.stem}-drill.rpt", board],
-                    log, results, timeout_seconds=args.timeout,
-                )
-                if not (gerbers_ok and drill_ok):
-                    return finish(results, output, log_path, strict_checks)
+                run_step(cli, "Gerber dosyaları", ["pcb", "export", "gerbers", "--output",
+                         gerber_dir, "--check-zones", board], log, results,
+                         timeout_seconds=args.timeout)
+                run_step(cli, "Excellon drill ve harita", ["pcb", "export", "drill", "--output",
+                         drill_dir, "--excellon-separate-th", "--generate-map", "--map-format", "pdf",
+                         "--generate-report", "--report-path", drill_dir / f"{board.stem}-drill.rpt", board],
+                         log, results, timeout_seconds=args.timeout)
 
-                zip_suffix = "-preliminary-Gerber-Drill.zip" if phase == "preliminary" else "-Gerber-Drill.zip"
-                archive = output / f"{board.stem}{zip_suffix}"
+                archive = output / f"{board.stem}-Gerber-Drill.zip"
                 try:
-                    files = sorted(p for p in staging.rglob("*") if p.is_file())
+                    files = sorted(path for path in staging.rglob("*") if path.is_file())
                     if not files:
                         raise RuntimeError("Gerber/drill çıktısı oluşmadı.")
                     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as package:
@@ -361,30 +238,16 @@ def build(args: argparse.Namespace) -> int:
                 except (OSError, RuntimeError, zipfile.BadZipFile) as exc:
                     results.append(StepResult("Gerber + drill ZIP", "HATA", str(exc)))
                     print(f"[HATA] Gerber + drill ZIP: {exc}")
-                    return finish(results, output, log_path, strict_checks)
 
-            if not run_step(
-                cli, "Montaj PDF (F.Fab/B.Fab)",
-                ["pcb", "export", "pdf", "--mode-multipage", "--layers", "F.Fab,B.Fab", "--output",
-                 assembly_dir / f"{board.stem}-assembly.pdf", "--check-zones", board],
-                log, results, timeout_seconds=args.timeout,
-            ):
-                return finish(results, output, log_path, strict_checks)
+            run_step(cli, "Montaj PDF (F.Fab/B.Fab)", ["pcb", "export", "pdf", "--mode-multipage",
+                     "--layers", "F.Fab,B.Fab", "--output", assembly_dir / f"{board.stem}-assembly.pdf",
+                     "--check-zones", board], log, results, timeout_seconds=args.timeout)
+            run_step(cli, "3D STEP modeli", ["pcb", "export", "step", "--force", "--subst-models",
+                     "--output", model_dir / f"{board.stem}.step", board], log, results,
+                     timeout_seconds=args.timeout)
 
-            if not run_step(
-                cli, "3D STEP modeli",
-                ["pcb", "export", "step", "--force", "--subst-models", "--output",
-                 model_dir / f"{board.stem}.step", board],
-                log, results, timeout_seconds=args.timeout,
-            ):
-                return finish(results, output, log_path, strict_checks)
-
-    return finish(results, output, log_path, strict_checks)
-
-
-def finish(results: list[StepResult], output: Path, log_path: Path, strict_checks: bool) -> int:
+    failures += sum(1 for result in results if result.status == "HATA")
     findings = [result for result in results if result.status == "BULGU"]
-    failures = [result for result in results if result.status == "HATA"]
     print(f"\nÇıktı klasörü: {output}")
     print(f"Komut günlüğü: {log_path}")
     if findings:
@@ -392,37 +255,32 @@ def finish(results: list[StepResult], output: Path, log_path: Path, strict_check
         for result in findings:
             print(f"  - {result.name}: {result.detail}")
     if failures:
-        print(f"Build {len(failures)} hata ile tamamlandı. Ayrıntılar için build.log dosyasını inceleyin.")
-        return 1
-    if findings and strict_checks:
-        print("Checked/release aşaması ERC/DRC bulguları nedeniyle başarısız oldu.")
+        print(f"Build {failures} hata ile tamamlandı. Ayrıntılar için build.log dosyasını inceleyin.")
         return 1
     if findings:
-        print("Preliminary çıktıları oluşturuldu; ERC/DRC bulguları derlemeyi durdurmadı.")
-    else:
-        print("Tüm istenen çıktılar başarıyla oluşturuldu.")
+        print("Çıktılar oluşturuldu; ERC/DRC bulguları nedeniyle sonuç kodu 1.")
+        return 1
+    print("Tüm çıktılar başarıyla oluşturuldu.")
     return 0
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     script_root = Path(__file__).resolve().parent.parent
-    parser = argparse.ArgumentParser(
-        description="KiCad lifecycle aşamasına göre manufacturing/ çıktıları oluşturur."
-    )
+    parser = argparse.ArgumentParser(description="KiCad ERC/DRC ve üretim dosyalarını manufacturing/ içine çıkarır.")
     parser.add_argument("--project-dir", type=Path, default=script_root,
                         help="Proje klasörü (varsayılan: scripts/ klasörünün üst dizini).")
-    parser.add_argument("--schematic", help="Şematik dosyası; göreli yollar proje köküne göredir.")
-    parser.add_argument("--board", help="PCB dosyası; göreli yollar proje köküne göredir.")
+    parser.add_argument("--schematic", help="Kullanılacak .kicad_sch dosyası; göreli yollar proje köküne göredir.")
+    parser.add_argument("--board", help="Kullanılacak .kicad_pcb dosyası; göreli yollar proje köküne göredir.")
     parser.add_argument("--kicad-cli", help="kicad-cli çalıştırılabilir dosyasının yolu.")
-    parser.add_argument("--kicad-version", help="Build günlüğüne yazılacak KiCad sürüm etiketi.")
-    parser.add_argument("--changelog", type=Path,
-                        help="Changelog yolu (varsayılan: <proje>/CHANGELOG.md).")
-    parser.add_argument("--company", help="Başlık bloğunda kullanılacak şirket adı; changelog/env değerini geçersiz kılar.")
     parser.add_argument("--output-dir", type=Path, help="Çıktı dizini (varsayılan: <proje>/manufacturing).")
     parser.add_argument("--timeout", type=int, default=300,
-                        help="Her kicad-cli komutu için saniye sınırı (varsayılan: 300).")
+                        help="Her kicad-cli komutu için saniye cinsinden sınır (varsayılan: 300).")
     return parser.parse_args(argv)
 
 
 if __name__ == "__main__":
-    raise SystemExit(build(parse_args()))
+    try:
+        raise SystemExit(build(parse_args()))
+    except KeyboardInterrupt:
+        print("\nİşlem kullanıcı tarafından durduruldu.", file=sys.stderr)
+        raise SystemExit(130)
