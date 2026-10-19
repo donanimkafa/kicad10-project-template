@@ -2,8 +2,12 @@
 	(version 20260306)
 	(generator "eeschema")
 	(generator_version "10.0")
-	(uuid 7e15e6e1-e0da-4828-9eff-01b53389ad0b)
+	(uuid "7e15e6e1-e0da-4828-9eff-01b53389ad0b")
 	(paper "A4")
+	(title_block
+		(company "DonanimKafa")
+		(comment 1 "PHASE: draft")
+	)
 	(lib_symbols)
 	(sheet_instances
 		(path "/"

@@ -17,3 +17,50 @@ $ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" sch export bom --output C:\Use
 Wrote bill of materials to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad10-project-template-bom.csv'.
 
 $ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" pcb drc --severity-all --exit-code-violations --output C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\reports\kicad10-project-template-drc.rpt C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\kicad10-project-template.kicad_pcb
+Found 1 violations
+Found 0 unconnected items
+Saved DRC Report to C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\reports\kicad10-project-template-drc.rpt
+
+$ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" pcb export gerbers --output C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers --check-zones C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\kicad10-project-template.kicad_pcb
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Cu.gtl'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Cu.gbl'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Adhesive.gta'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Adhesive.gba'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Paste.gtp'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Paste.gbp'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Silkscreen.gto'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Silkscreen.gbo'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Mask.gts'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Mask.gbs'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_Drawings.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_Comments.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_Eco1.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_Eco2.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-Edge_Cuts.gm1'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-Margin.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Courtyard.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Courtyard.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-F_Fab.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-B_Fab.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_1.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_2.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_3.gbr'.
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\gerbers\kicad10-project-template-User_4.gbr'.
+
+$ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" pcb export drill --output C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill --excellon-separate-th --generate-map --map-format pdf --generate-report --report-path C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill\kicad10-project-template-drill.rpt C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\kicad10-project-template.kicad_pcb
+Created file 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill\kicad10-project-template-PTH.drl'
+Created file 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill\kicad10-project-template-NPTH.drl'
+Created file 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill\kicad10-project-template-PTH-drl_map.pdf'.
+Created file 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\kicad-manufacturing-8du7pghf\drill\kicad10-project-template-NPTH-drl_map.pdf'.
+Done.
+
+$ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" pcb export pdf --mode-multipage --layers F.Fab,B.Fab --output C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\assembly\kicad10-project-template-assembly.pdf --check-zones C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\kicad10-project-template.kicad_pcb
+Plotted to 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\assembly\kicad10-project-template-assembly.pdf'.
+Done.
+
+$ "C:\Program Files\KiCad\10.0\bin\kicad-cli.exe" pcb export step --force --subst-models --output C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\3d\kicad10-project-template.step C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\kicad10-project-template.kicad_pcb
+STEP file 'C:\Users\ozdil\Desktop\Projeler\kicad10-project-template\manufacturing\3d\kicad10-project-template.step' created.
+
+Export time 0.023 s
+[stderr]
+23:28:13: Warning: Board outline is malformed. Run DRC for a full analysis.
