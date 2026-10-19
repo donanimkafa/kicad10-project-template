@@ -2,31 +2,45 @@
 
 [![KiCad CI](https://github.com/OWNER/REPOSITORY/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/OWNER/REPOSITORY/actions/workflows/ci.yml)
 
-> Rozetin çalışması için `OWNER/REPOSITORY` ifadelerini GitHub kullanıcı/kurum adınız ve depo adınızla değiştirin.
+> **Rozeti etkinleştirme:** `OWNER/REPOSITORY` bölümünü GitHub kullanıcı/kurum adınız ve depo adınızla değiştirin. Rozet, `main` dalındaki **KiCad 10 Design Lifecycle** iş akışının son durumunu gösterir.
 
-KiCad 10 projeleri için bu şablon, `kicad-cli` ve Python kullanarak şematik/PCB kontrollerini ve üretim belgelerini otomatik oluşturur. GitHub Actions sonuçları ve sürüm paketleri de aynı iş akışından yönetilir.
+KiCad 10 projeleri için bu şablon; ERC/DRC denetimlerini, dokümantasyon üretimini, üretim dosyalarını ve GitHub Actions üzerinden sürüm yayınlamayı otomatikleştirir. Çıktılar `manufacturing/` klasörüne yazılır.
 
-## Tasarım aşamaları
+## Tasarım yaşam döngüsü
 
-| Aşama | Üretilenler ve kontrol davranışı |
+| Aşama | Davranış |
 | --- | --- |
-| `draft` | Şematik PDF ve BOM CSV. ERC/DRC ve PCB çıktıları çalıştırılmaz. |
-| `preliminary` | ERC/DRC raporları, şematik PDF, BOM, Gerber/Drill ZIP, montaj PDF ve STEP. ERC/DRC bulguları üretimi durdurmaz. |
-| `checked` | `draft` dışındaki tüm çıktılar. ERC veya DRC bulgusu varsa iş akışı başarısız olur. Varsayılan aşamadır. |
-| `release` | `checked` ile aynı kontroller ve çıktılar. Şematikte `release` seçiliyken `v*` etiketi gönderilirse GitHub Release yayımlanır. |
+| `draft` | Şematik PDF ve BOM CSV üretir. ERC/DRC veya PCB çıktısı üretmez. |
+| `preliminary` | ERC/DRC bulgularını raporlar ve üretime devam eder; şematik PDF, BOM, ön Gerber/Drill ZIP, montaj PDF ve STEP üretir. |
+| `checked` | ERC ve DRC bulgusu varsa derlemeyi durdurur. Temel dokümantasyon ve üretim çıktılarının tamamını üretir. Varsayılan aşamadır. |
+| `release` | `v*` Git etiketiyle çalışır. ERC/DRC temiz olmalı; onaylı dosyalar GitHub Release’e yüklenir. |
 
-### Aşamayı şematikte seçme
+Normal push ve `main` için açılan pull request işlemleri `checked` aşamasını çalıştırır. GitHub Actions sayfasından elle çalıştırmada `draft`, `preliminary` veya `checked` seçilebilir. Örnek yerel komutlar:
 
-1. KiCad Schematic Editor'da şematiği açın.
-2. **File → Page Settings** menüsünü açın.
-3. **Title Block** bölümündeki boş bir **Comment** alanına aşağıdaki değerlerden birini yazın:
+```powershell
+python scripts/build_docs.py --phase draft
+python scripts/build_docs.py --phase preliminary
+python scripts/build_docs.py --phase checked
+```
 
-   ```text
-   PHASE: draft
-   ```
+`release` aşaması CI’da `v1.0.0` gibi bir etiket gönderildiğinde seçilir. Gerçek bir sürümü yayınlamadan önce etiketin doğru commit üzerinde olduğundan emin olun.
 
-   Değeri `draft`, `preliminary`, `checked` veya `release` olarak ayarlayın. Aynı şematikte birden fazla farklı PHASE değeri bırakmayın.
-4. Şematiği kaydedin. `scripts/build_docs.py`, `.kicad_sch` dosyasındaki PHASE metnini okur. Metin yoksa `checked` kullanır.
+## Gereksinimler ve yerel geliştirme
+
+- KiCad 10 ve `kicad-cli` bilgisayarda kurulu ve PATH üzerinden erişilebilir olmalıdır.
+- Python 3.10 veya üzeri gerekir.
+- Başlık bloğu otomasyonu için proje bir Git deposu olmalı; `CHANGELOG.md` içindeki `Company:` alanı gerçek şirket adıyla doldurulmalıdır.
+- `draft` için kök dizinde bir `.kicad_sch`; diğer aşamalar için hem `.kicad_sch` hem `.kicad_pcb` gerekir.
+
+Depo kökünde PowerShell ile:
+
+```powershell
+kicad-cli version
+python scripts/update_title_block.py
+python scripts/build_docs.py --phase draft
+```
+
+Başlık bloğu güncellemesi `.kicad_sch` ve `.kicad_pcb` dosyalarını yerinde değiştirir. KiCad’de açmadan önce dosyaları kaydedin; sonucu GitHub Desktop’taki değişiklikler arasında kontrol edebilirsiniz. Farklı proje dosyaları varsa `--schematic` ve `--board` seçenekleriyle dosya yollarını belirtin.
 
 ## Proje yapısı
 
@@ -38,49 +52,34 @@ project-root/
 ├── lib/
 │   ├── symbols/
 │   ├── footprints/
+│   │   └── ProjectParts.pretty/
 │   └── 3dmodels/
 ├── scripts/
 │   ├── build_docs.py
 │   └── update_title_block.py
-├── manufacturing/             # Betik tarafından oluşturulur
+├── manufacturing/             # Otomatik üretilir
 ├── CHANGELOG.md
 ├── README.md
+├── sym-lib-table               # Projeye özel sembol kütüphaneleri
+├── fp-lib-table                # Projeye özel footprint kütüphaneleri
 ├── Project.kicad_pro
 ├── Project.kicad_sch
 └── Project.kicad_pcb
 ```
 
-Gerçek KiCad dosyalarının adı `Project` olmak zorunda değildir. Betik proje kökünde tek bir `.kicad_sch` ve (draft dışında) tek bir `.kicad_pcb` bulmayı bekler. Birden fazla dosya varsa `--schematic` ve `--board` seçenekleri kullanılabilir.
+Gerçek proje dosyalarının adları projeye göre değişebilir. `manufacturing/` içeriği betik tarafından yeniden üretildiğinden, genellikle kaynak dosya olarak commit edilmesi gerekmez; CI çıktıları Actions artifact ve sürüm etiketlerinde saklanır.
 
-## Yerel kullanım
+## Yerel kütüphane ve taşınabilir yollar
 
-Gereksinimler: KiCad 10 (`kicad-cli` PATH'te olmalı), Python 3 ve proje dosyaları. Başlık bloğu güncellemesi için depo Git deposu olmalı; `CHANGELOG.md` içindeki `Company:` alanını doldurun ve bir sürüm etiketi veya changelog sürümü sağlayın.
+- Sembol dosyalarını `lib/symbols/` altında tutun. Sembol kütüphanesini KiCad’in **Project Specific Libraries** tablosuna ekleyin ve proje kökündeki `sym-lib-table` dosyasını depoya commit edin. Tablo yolu `${KIPRJMOD}/lib/symbols/YourLibrary.kicad_sym` biçiminde olmalıdır.
+- Footprint’ler `.pretty` uzantılı kütüphane klasörlerinde bulunur; örneğin `lib/footprints/ProjectParts.pretty/Part.kicad_mod`. Projeye özel `fp-lib-table` içindeki URI `${KIPRJMOD}/lib/footprints/ProjectParts.pretty` biçiminde olmalıdır.
+- STEP/WRL modellerini `lib/3dmodels/` altında saklayın. Footprint’in 3D model alanında `${KIPRJMOD}/lib/3dmodels/Model.step` veya `.wrl` kullanın.
+- Bilgisayara özel `C:\...`, `/home/...` gibi mutlak yollar kullanmayın. `${KIPRJMOD}`, KiCad’de mevcut proje klasörüne açılır ve projeyi başka bilgisayara taşırken yolların korunmasını sağlar.
+- `sym-lib-table`, `fp-lib-table`, footprint `.pretty` klasörleri ve 3D model dosyaları Git’e eklenmelidir. Her geliştirme bilgisayarında kütüphaneleri global tabloya yeniden tanımlamak yerine proje tablolarını kullanın.
+- Footprint kütüphane takma adları ve sembol kimlikleri şematik/PCB içindeki referanslarla eşleşmelidir. Kütüphane veya takma ad değiştirirken tasarımları KiCad’de yeniden kontrol edin.
 
-Proje kökünde PowerShell:
+KiCad, `${KIPRJMOD}` değişkenini geçerli proje klasörüne çözer. Sembol/footprint tabloları proje özelinde tutulabilir; böylece mutlak bilgisayar yollarına bağlı kalmazlar. [KiCad 10 path variable belgeleri](https://docs.kicad.org/10.0/en/kicad/kicad.html) · [Şematik sembol kütüphaneleri](https://docs.kicad.org/10.0/en/eeschema/eeschema.html) · [PCB footprint kütüphaneleri](https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html)
 
-```powershell
-kicad-cli version
-python scripts/build_docs.py
-```
+## CI çıktıları
 
-Betik başlık bloğu alanlarını günceller ve seçilen aşamaya ait dosyaları `manufacturing/` altına yazar. Yerel çalıştırmadan önce KiCad dosyalarını kaydedin; başlık bloğu değişikliklerini GitHub Desktop'ta gözden geçirin.
-
-## GitHub Actions
-
-`ci.yml`, push, pull request ve `v*` etiketlerinde betiği çalıştırır. Aşama `.kicad_sch` dosyasından alınır. `release` seçimi tek başına GitHub Release oluşturmaz; bunun için aynı commit'e `v1.0.0` gibi bir etiket gönderilmelidir.
-
-Başarılı iş akışının `manufacturing/` çıktıları Actions artifact'i olarak saklanır. `release` aşamasıyla tetiklenen `v*` etiketi, seçili üretim dosyalarını GitHub Releases sayfasında yayımlar.
-
-## Üretim çıktıları
-
-```text
-manufacturing/
-├── reports/       # ERC/DRC raporları ve build.log
-├── schematic/     # Şematik PDF
-├── assembly/      # Montaj PDF
-├── 3d/            # STEP modeli
-├── *-bom.csv      # BOM
-└── *Gerber-Drill.zip
-```
-
-`draft` aşamasında yalnızca `schematic/` PDF'i ve BOM üretilir. Diğer aşamalar PCB çıktıları da üretir.
+`manufacturing/` altında aşamaya göre şematik PDF, BOM CSV, ERC/DRC raporları, Gerber ve Drill ZIP, montaj PDF ve 3D STEP dosyaları oluşturulur. Başarılı tag build’inde üretim paketi GitHub Release’e yüklenir.
