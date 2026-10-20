@@ -1,0 +1,59 @@
+name: "03 · Bring-up / test raporu"
+description: Gelen karttaki test sonuçlarını ve hataları kaydet (Aşama 9)
+title: "[Bring-up] "
+labels: ["stage:bringup", "type:test"]
+body:
+  - type: input
+    id: revision
+    attributes:
+      label: Kart revizyonu / sürüm etiketi
+      placeholder: "ör. v1.0.0 / Rev A"
+    validations:
+      required: true
+  - type: input
+    id: serial
+    attributes:
+      label: Seri no / parti
+  - type: input
+    id: date
+    attributes:
+      label: Test tarihi
+  - type: dropdown
+    id: result
+    attributes:
+      label: Genel sonuç
+      options:
+        - Çalışıyor
+        - Kısmen çalışıyor
+        - Çalışmıyor
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Yapılan testler
+      placeholder: |
+        - [x] Besleme gerilimleri
+        - [x] Saat / reset
+        - [ ] Haberleşme arayüzleri
+    validations:
+      required: true
+  - type: textarea
+    id: problems
+    attributes:
+      label: Bulunan sorunlar
+      description: Her sorun için belirti, ölçüm ve olası neden. Ayrı sorunlar için ayrı Issue açıp buraya bağlayın.
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Ölçümler
+      description: Osiloskop görüntüsü, gerilim değerleri, sıcaklık vb. (resim sürükleyip bırakabilirsiniz)
+  - type: dropdown
+    id: revision-needed
+    attributes:
+      label: Yeni revizyon gerekli mi?
+      options:
+        - Hayır
+        - Evet, kritik hata
+        - Evet, iyileştirme
+        - Bilmiyorum
