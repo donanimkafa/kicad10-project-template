@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Süreç rehberi
+    url: https://github.com/donanimkafa/kicad10-project-template#readme
+    about: Tasarım aşamaları ve çalışma akışı için README'ye bakın.
