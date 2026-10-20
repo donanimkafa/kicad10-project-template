@@ -1,0 +1,48 @@
+name: "02 · Parça seçimi / araştırma"
+description: Kritik bir parça veya blok için alternatifleri karşılaştır (Aşama 1)
+title: "[Araştırma] "
+labels: ["stage:research", "type:research"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Kritik IC, regülatör, MCU, konnektör gibi seçimleri burada kayıt altına alın.
+        "Neden bu parça?" sorusunun cevabı 1 yıl sonra da bulunabilsin.
+  - type: input
+    id: block
+    attributes:
+      label: Fonksiyon / blok
+      placeholder: "ör. 24V -> 5V buck dönüştürücü"
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Bu blok için gereksinimler
+    validations:
+      required: true
+  - type: textarea
+    id: candidates
+    attributes:
+      label: Adaylar
+      description: Her aday için üretici/MPN, fiyat, stok, datasheet linki, artı/eksi.
+      placeholder: |
+        | MPN | Üretici | Fiyat | Stok | Artı | Eksi |
+        |-----|---------|-------|------|------|------|
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Karar ve gerekçe
+      description: Seçim yapıldıysa hangi parça ve neden.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Seçilen parça kontrolleri
+      options:
+        - label: Aktif üretimde (EOL / NRND değil)
+        - label: Yeterli stok ve birden fazla tedarikçi var
+        - label: Footprint ve 3D model mevcut veya hazırlanacak
+        - label: İkinci kaynak (alternatif parça) belirlendi
+        - label: Şirket onaylı parça listesinde (AVL) veya onay istendi

@@ -1,0 +1,84 @@
+name: "01 · Yeni kart talebi"
+description: Yeni bir kart veya revizyon için gereksinimleri tanımla (Aşama 0)
+title: "[Gereksinim] "
+labels: ["stage:requirements", "type:board"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bu form tasarımın **tek gerçek kaynağıdır**. Şematiğe başlamadan önce doldurun;
+        eksik kalan alanlar sonradan en pahalı hatalara dönüşür.
+  - type: input
+    id: board-name
+    attributes:
+      label: Kart adı / kodu
+      placeholder: "ör. motor-driver"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Amaç
+      description: Bu kart ne işe yarayacak? Hangi ürünün/sistemin parçası?
+    validations:
+      required: true
+  - type: input
+    id: power-in
+    attributes:
+      label: Giriş gerilimi aralığı
+      placeholder: "ör. 9-36 V DC"
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: Maksimum akım / güç
+      placeholder: "ör. 5 A sürekli, 12 A tepe"
+  - type: textarea
+    id: interfaces
+    attributes:
+      label: Arayüzler ve konnektörler
+      description: CAN, USB, Ethernet, SPI, analog girişler, programlama/debug portu vb.
+  - type: input
+    id: size
+    attributes:
+      label: Mekanik sınırlar
+      placeholder: "ör. en fazla 60x40 mm, M3 4 delik"
+  - type: dropdown
+    id: layers
+    attributes:
+      label: Tahmini katman sayısı
+      options:
+        - "2"
+        - "4"
+        - "6"
+        - "Bilmiyorum"
+  - type: input
+    id: cost
+    attributes:
+      label: Hedef maliyet (BOM) ve adet
+      placeholder: "ör. 15 USD @ 100 adet"
+  - type: checkboxes
+    id: standards
+    attributes:
+      label: Uyulması gereken standartlar / koşullar
+      options:
+        - label: CE / EMC
+        - label: RoHS
+        - label: Endüstriyel sıcaklık (-40..85 °C)
+        - label: Otomotiv
+        - label: Yok / henüz bilinmiyor
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Kabul kriterleri
+      description: "Bu kart ne zaman 'bitti' sayılır? Ölçülebilir yazın."
+      placeholder: |
+        - 12 V girişte 3.3 V çıkış ±3% içinde
+        - 5 A yükte sıcaklık artışı < 40 °C
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Hedef tarih
