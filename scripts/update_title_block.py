@@ -281,12 +281,20 @@ def update_title_blocks(
 def main() -> int:
     parser = argparse.ArgumentParser(description="KiCad şematik/PCB title_block alanlarını Git ve changelog ile günceller.")
     parser.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent)
-    parser.add_argument("--schematic", type=Path, help="Şematik dosyası; varsayılan kök dizindeki tek dosya.")
-    parser.add_argument("--board", type=Path, help="PCB dosyası; varsayılan kök dizindeki tek dosya.")
+    parser.add_argument("--hardware-dir", type=Path, default=Path("hardware"),
+                        help="KiCad dosyalarının klasörü; göreli yol proje köküne göredir (varsayılan: hardware).")
+    parser.add_argument("--schematic", type=Path, help="Şematik dosyası; varsayılan hardware klasöründeki tek dosya.")
+    parser.add_argument("--board", type=Path, help="PCB dosyası; varsayılan hardware klasöründeki tek dosya.")
     parser.add_argument("--changelog", type=Path, help="CHANGELOG.md yolu (varsayılan: proje kökü).")
     parser.add_argument("--company", help="Company alanı; öncelik: bu seçenek, KICAD_COMPANY, CHANGELOG.md.")
     args = parser.parse_args()
     root = args.project_dir.expanduser().resolve()
+    # KiCad dosyalarının klasörü; yoksa eski düzenle uyumlu olmak için proje köküne düşer.
+    hardware_dir = args.hardware_dir.expanduser()
+    if not hardware_dir.is_absolute():
+        hardware_dir = root / hardware_dir
+    if not hardware_dir.is_dir():
+        hardware_dir = root
     try:
         files: list[Path] = []
         for option, suffix, label in (
@@ -299,7 +307,7 @@ def main() -> int:
                     raise ValueError(f"{label} dosyası bulunamadı: {path}")
                 files.append(path)
             else:
-                found = sorted(root.glob(f"*{suffix}"))
+                found = sorted(hardware_dir.glob(f"*{suffix}"))
                 if len(found) > 1:
                     raise ValueError(f"Birden fazla {label} dosyası var; --{label} ile seçin.")
                 files.extend(found)

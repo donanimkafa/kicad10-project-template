@@ -11,4 +11,9 @@
 		)
 	)
 	(embedded_fonts no)
+(title_block
+  (rev "v1.0.0")
+  (date "2026-10-21")
+  (company "Donanimkafa")
+)
 )
