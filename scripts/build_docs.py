@@ -291,6 +291,26 @@ def build(args: argparse.Namespace) -> int:
         print(f"{phase} aşaması için {hardware_dir} içinde .kicad_pcb dosyası gerekli.", file=sys.stderr)
         return 2
 
+    cli = args.kicad_cli or find_kicad_cli()
+    if not cli:
+        print("kicad-cli bulunamadı. PATH'e ekleyin veya --kicad-cli ile yolunu belirtin.", file=sys.stderr)
+        return 2
+    try:
+        version_check = subprocess.run(
+            [cli, "version"], text=True, capture_output=True, check=False,
+            timeout=args.timeout,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"kicad-cli çalıştırılamadı: {exc}", file=sys.stderr)
+        return 2
+    if version_check.returncode != 0:
+        detail = version_check.stderr.strip() or version_check.stdout.strip()
+        print(
+            f"kicad-cli sürüm kontrolü başarısız (çıkış kodu {version_check.returncode}): {detail}",
+            file=sys.stderr,
+        )
+        return 2
+
     title_block_files = [schematic]
     if board is not None:
         title_block_files.append(board)
@@ -305,11 +325,6 @@ def build(args: argparse.Namespace) -> int:
         print(f"Başlık bloğu güncellenemedi: {exc}", file=sys.stderr)
         return 2
     print(f"Başlık bloğu metadata kaynağı: {metadata.source}; revizyon {metadata.revision}.")
-
-    cli = args.kicad_cli or find_kicad_cli()
-    if not cli:
-        print("kicad-cli bulunamadı. PATH'e ekleyin veya --kicad-cli ile yolunu belirtin.", file=sys.stderr)
-        return 2
 
     output = Path(args.output_dir).expanduser() if args.output_dir else project_dir / "manufacturing"
     if not output.is_absolute():
