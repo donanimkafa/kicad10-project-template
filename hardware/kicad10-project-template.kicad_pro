@@ -294,6 +294,7 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
+      "step": "",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -404,7 +405,7 @@
     "meta": {
       "version": 1
     },
-    "page_layout_descr_file": "",
+    "page_layout_descr_file": "${KIPRJMOD}/sheet/company-sheet-A4.kicad_wks",
     "plot_directory": "",
     "reuse_designators": true,
     "subpart_first_id": 65,
@@ -425,7 +426,14 @@
       "kicad10-project-template"
     ]
   ],
-  "text_variables": {},
+  "text_variables": {
+    "DESIGNER": "Oğuz Özdil",
+    "KICAD_VERSION": "",
+    "PHASE": "Draft",
+    "PROJECT_CODE": "02000",
+    "REVIEWER": "",
+    "REVISION": ""
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0
