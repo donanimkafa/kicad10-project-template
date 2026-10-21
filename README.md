@@ -30,7 +30,20 @@ KiCad 10 projeleri için bu şablon iki şeyi bir arada sunar:
 
 ## Çalışma akışı
 
-Her iş bir **Issue** ile başlar ve bir **Pull Request** ile ilerler. Kararlar ve değişiklikler GitHub'da kayıt altında kalır.
+Temel akış: **Issue → çalışma dalı → PR → main → sürüm etiketi**.
+
+Her iş bir Issue ile başlar. Güncel `main` üzerinden o işe özel kısa ömürlü bir dal açılır; değişiklikler `main` hedefli bir Pull Request ile incelenir. Sürekli açık bir `dev` dalı gerekmez.
+
+### Bir işi baştan sona yürütme
+
+1. Gereksinimi veya sorunu Issue'da tanımlayın; kabul kriterlerini yazın.
+2. Güncel `main` üzerinden örneğin `feat/12-power-input` veya `fix/18-usb-esd` adlı bir çalışma dalı açın. Sayı ilgili Issue numarasıdır.
+3. Tasarımı ve CHANGELOG'u güncelleyin. Çalışma dalını gönderip `main` hedefli bir Draft PR açın; otomatik çıktıları geliştirme sırasında da inceleyin.
+4. Tasarımın durumuna göre `PHASE` seçin. PR'da CI sonucunu ve üretilen belgeleri inceleyin; inceleme tamamlandığında PR'ı `main` ile birleştirin ve çalışma dalını silin.
+5. Üretim sürümü hazırlarken hedef revizyon ve tarih ile CHANGELOG'u tamamlayın, `PHASE: release` seçin ve bu değişiklikleri de PR üzerinden birleştirin. Etiket oluşturulmadan önce başlık revizyonu önceki Git etiketini gösterebilir; etiket derlemesi yeni sürümü uygular.
+6. `main` üzerindeki onaylı sürüm commit'ine `v1.0.1` gibi bir etiket gönderin. Etiket derlemesinin kontrolleri geçmesiyle üretim dosyaları GitHub Release'e eklenir. Gelen kartın test sonuçlarını bring-up Issue'sunda kaydedin.
+
+`main`, incelenmiş çalışmaların birleştiği daldır; üretime gönderilecek belirli sürüm, etiketi ve Release çıktılarıyla tanımlanır. Her PR için sürüm etiketi oluşturmak gerekmez. PR zorunluluğu için GitHub depo kurallarını ayrıca yapılandırın; şablon bu kuralı kendiliğinden etkinleştirmez. Sürüm etiketlerini `main` üzerinden oluşturmak bu çalışma akışının kuralıdır; mevcut CI etiketin hangi dalda olduğunu ayrıca doğrulamaz.
 
 | # | Aşama | Kayıt yeri | Etiket |
 |---|---|---|---|
@@ -87,7 +100,7 @@ Kartlar sütunlar arasında elle sürüklenir; aşama geçişi bilinçli bir kar
 
 1. Her iş bir Issue ile başlar, bir PR ile biter.
 2. Karar gerektiren seçimlerin gerekçesi Issue'da yazılır.
-3. Ara PR'larda `Refs #N`, kartın gerçekten bittiği PR'da `Closes #N` kullanın.
+3. Issue'yu kısmen ilerleten PR'larda `Refs #N`, ilgili Issue'nun kabul kriterlerini tamamlayan PR'da `Closes #N` kullanın. Kartın üretimi ve testi ayrı Issue'larla takip edilebilir.
 4. PR'ı açtıktan sonra bir gün ara verip taze gözle yeniden bakın.
 5. `PHASE` değerini bilinçli yükseltin; CI'ın sıkılığı buna bağlıdır.
 
@@ -178,7 +191,7 @@ saklamak istediğiniz önceki üretimleri bu klasörün dışında arşivleyin.
 
 ## GitHub Actions
 
-`ci.yml`, push, pull request ve `v*` etiketlerinde betiği çalıştırır. Aşama `.kicad_sch` dosyasından alınır. `release` seçimi tek başına GitHub Release oluşturmaz; bunun için aynı commit'e `v1.0.0` gibi bir etiket gönderilmelidir.
+`ci.yml`, `main` dalına gönderimde, `main` hedefli PR'larda ve `v*` etiketlerinde betiği çalıştırır. Çalışma dalındaki otomatik kontroller için Draft PR'ı erken açın; PR açıldıktan sonraki gönderimler de kontrol edilir. Aşama şematikteki PHASE metninden veya `.kicad_pro` içindeki PHASE text variable'ından alınır. `release` seçimi tek başına GitHub Release oluşturmaz; bunun için onaylı `main` commit'ine `v1.0.0` gibi bir etiket gönderilmelidir.
 
 Başarılı iş akışının `manufacturing/` çıktıları Actions artifact'i olarak saklanır. `release` aşamasıyla tetiklenen `v*` etiketi, seçili üretim dosyalarını GitHub Releases sayfasında yayımlar.
 

@@ -1,5 +1,5 @@
 ## Özet
-<!-- Bu PR ne değiştiriyor ve neden? İlgili Issue: Closes #__ -->
+<!-- Bu PR ne değiştiriyor ve neden? Tamamlanan Issue için Closes #__, kısmi ilerleme için Refs #__ kullanın. -->
 
 
 ## Değişiklik türü
@@ -18,6 +18,7 @@
 ## Kontrol listesi
 
 ### Her PR için
+- [ ] Hedef dal main; ilgili Issue açıklamaya bağlandı
 - [ ] CI yeşil (ERC/DRC dahil, aşama gerektiriyorsa)
 - [ ] Bu PR tek bir konuya odaklı
 - [ ] CHANGELOG.md güncellendi

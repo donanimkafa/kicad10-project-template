@@ -21,7 +21,12 @@ Company: Donanimkafa
 
 ### Added
 
-- Add unreleased changes here.
+- Document the Issue → working branch → PR → main → version tag workflow, with early Draft PRs for CI checks and release preparation guidance.
+
+### Changed
+
+- Run branch push CI on main; use main-targeting PRs for working branch checks instead of requiring a persistent dev branch.
+- Add target branch and linked Issue checks to the PR template.
 
 ## [1.0.0] - 2026-10-18
 
