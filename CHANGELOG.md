@@ -9,6 +9,10 @@ Company: Donanimkafa
 
 ## [Unreleased]
 
+### Fixed
+
+- Clear previous generated manufacturing files before a new build to prevent stale outputs after phase or project name changes.
+
 ### Added
 
 - Add unreleased changes here.

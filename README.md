@@ -147,6 +147,14 @@ python scripts/build_docs.py
 
 Betik başlık bloğu alanlarını günceller ve seçilen aşamaya ait dosyaları `manufacturing/` altına yazar. Yerel çalıştırmadan önce KiCad dosyalarını kaydedin; başlık bloğu değişikliklerini commit etmeden önce gözden geçirin.
 
+Üretim başlamadan önce seçili çıktı klasöründeki önceki BOM, Gerber/Drill ZIP,
+şematik/montaj PDF, STEP ve ERC/DRC raporları ile `build.log` temizlenir.
+Eski sürümlerin `fabrication/*-fabrication.pdf` ve `fabrication/*_Gerbers.zip` çıktıları da temizlenir.
+Bu işlem tüm proje adlarını ve preliminary ZIP dosyalarını kapsar; böylece aşama
+veya proje adı değiştiğinde eski üretim dosyaları güncel çıktılarla karışmaz.
+Diğer dosyalar korunur. `--output-dir` için üretime ayrılmış bir klasör kullanın;
+saklamak istediğiniz önceki üretimleri bu klasörün dışında arşivleyin.
+
 ### Sık kullanılan seçenekler
 
 | Seçenek | Açıklama |

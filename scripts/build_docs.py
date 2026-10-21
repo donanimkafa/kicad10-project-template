@@ -233,6 +233,29 @@ def run_step(
     return False
 
 
+def clean_generated_outputs(output: Path) -> int:
+    """Remove known build products, preserving unrelated files and directories."""
+    patterns = (
+        "*-bom.csv", "*-Gerber-Drill.zip",
+        "schematic/*-schematic.pdf", "assembly/*-assembly.pdf",
+        "fabrication/*-fabrication.pdf", "3d/*.step",
+        "fabrication/*_Gerbers.zip",
+        "reports/*-erc.rpt", "reports/*-drc.rpt", "reports/build.log",
+    )
+    root = output.resolve()
+    candidates = sorted({path for pattern in patterns for path in output.glob(pattern)})
+    # Validate every candidate before deleting anything. In particular, do not
+    # follow linked output subdirectories outside the selected output folder.
+    for path in candidates:
+        if not path.resolve().is_relative_to(root):
+            raise ValueError(f"Çıktı klasörü dışına yönlenen dosya temizlenemez: {path}")
+        if not path.is_file() and not path.is_symlink():
+            raise ValueError(f"Üretim dosyası yerine klasör bulundu: {path}")
+    for path in candidates:
+        path.unlink()
+    return len(candidates)
+
+
 def build(args: argparse.Namespace) -> int:
     project_dir = Path(args.project_dir).expanduser().resolve()
     if not project_dir.is_dir():
@@ -295,6 +318,12 @@ def build(args: argparse.Namespace) -> int:
     if not output.is_absolute():
         output = project_dir / output
     output = output.resolve()
+    try:
+        removed = clean_generated_outputs(output)
+    except (OSError, ValueError) as exc:
+        print(f"Eski üretim çıktıları temizlenemedi: {exc}", file=sys.stderr)
+        return 2
+    print(f"[INFO] Önceki çalışmalardan kalan {removed} üretim dosyası temizlendi.")
     reports_dir = output / "reports"
     schematic_dir = output / "schematic"
     assembly_dir = output / "assembly"
