@@ -297,9 +297,9 @@ def main() -> int:
         hardware_dir = root
     try:
         files: list[Path] = []
-        for option, suffix, label in (
-            (args.schematic, ".kicad_sch", "şematik"),
-            (args.board, ".kicad_pcb", "PCB"),
+        for option, suffix, label, flag in (
+            (args.schematic, ".kicad_sch", "şematik", "--schematic"),
+            (args.board, ".kicad_pcb", "PCB", "--board"),
         ):
             if option:
                 path = option if option.is_absolute() else root / option
@@ -309,7 +309,7 @@ def main() -> int:
             else:
                 found = sorted(hardware_dir.glob(f"*{suffix}"))
                 if len(found) > 1:
-                    raise ValueError(f"Birden fazla {label} dosyası var; --{label} ile seçin.")
+                    raise ValueError(f"Birden fazla {label} dosyası var; {flag} ile seçin.")
                 files.extend(found)
         if not files:
             raise ValueError("Güncellenecek .kicad_sch veya .kicad_pcb dosyası bulunamadı.")

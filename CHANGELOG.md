@@ -16,6 +16,7 @@ Company: Donanimkafa
 - Document label setup through the existing GitHub Actions workflow, including how repeated runs update labels.
 - Replace changelog link placeholders with the repository's actual GitHub address.
 - Require explicit schematic/board selection when multiple matching KiCad files exist, instead of choosing by directory name.
+- Correct title-block updater error messages to suggest the actual --schematic and --board options.
 
 ### Added
 
