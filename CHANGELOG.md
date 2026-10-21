@@ -15,6 +15,7 @@ Company: Donanimkafa
 - Remove the tracked Python bytecode cache; existing ignore rules prevent it from being added again.
 - Document label setup through the existing GitHub Actions workflow, including how repeated runs update labels.
 - Replace changelog link placeholders with the repository's actual GitHub address.
+- Require explicit schematic/board selection when multiple matching KiCad files exist, instead of choosing by directory name.
 
 ### Added
 

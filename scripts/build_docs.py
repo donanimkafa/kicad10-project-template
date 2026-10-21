@@ -64,7 +64,7 @@ def resolve_input(
     """Return the requested KiCad file.
 
     Explicit relative paths are resolved against ``project_dir`` (repo root).
-    Automatic discovery looks inside ``search_dir`` (e.g. ``hardware/``).
+    Automatic discovery requires exactly one matching file inside ``search_dir``.
     """
     search_dir = search_dir or project_dir
     if value:
@@ -86,9 +86,6 @@ def resolve_input(
         return None
     if len(candidates) == 1:
         return candidates[0]
-    for candidate in candidates:
-        if candidate.stem.casefold() in (project_dir.name.casefold(), search_dir.name.casefold()):
-            return candidate
     choices = "\n  ".join(p.name for p in candidates)
     raise ValueError(f"Birden fazla {label} dosyası bulundu. --{label} ile seçim yapın:\n  {choices}")
 

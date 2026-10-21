@@ -140,7 +140,7 @@ project-root/
 └── README.md
 ```
 
-Gerçek KiCad dosyalarının adı `Project` olmak zorunda değildir. Betik `hardware/` içinde tek bir `.kicad_sch` ve (draft dışında) tek bir `.kicad_pcb` bulmayı bekler. Birden fazla dosya varsa `--schematic` ve `--board` seçenekleri kullanılabilir.
+Gerçek KiCad dosyalarının adı `Project` olmak zorunda değildir. Betik `hardware/` içinde tek bir `.kicad_sch` ve (draft dışında) tek bir `.kicad_pcb` bulmayı bekler. Aynı türde birden fazla dosya varsa ilgili `--schematic` veya `--board` seçeneğiyle açık seçim zorunludur; klasör adıyla eşleşen dosyaya öncelik verilmez. `draft` aşamasında da birden fazla PCB dosyası varsa başlık bloğu güncellenecek PCB açıkça seçilmelidir.
 
 > **Kütüphane yolları:** KiCad dosyaları `hardware/` altında, `lib/` ise kökte olduğundan `sym-lib-table` ve `fp-lib-table` içindeki yollar `${KIPRJMOD}/../lib/...` biçiminde olmalıdır.
 
