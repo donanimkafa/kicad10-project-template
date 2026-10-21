@@ -41,3 +41,11 @@ fp-info-cache
 
 # Local project settings
 *.kicad_prl
+
+
+# Betik tarafindan uretilen ciktilar (CI artifact olarak saklanir)
+manufacturing/
+
+# Python onbellegi
+__pycache__/
+*.pyc
