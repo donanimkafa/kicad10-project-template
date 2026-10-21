@@ -25,7 +25,7 @@ KiCad 10 projeleri için bu şablon iki şeyi bir arada sunar:
 1. Bu sayfada **Use this template → Create a new repository** ile yeni proje reposunu oluşturun.
 2. Repoyu klonlayın ve KiCad dosyalarını `hardware/` klasöründe açın.
 3. `CHANGELOG.md` içindeki `Company:` alanını kendi şirket/ekip adınızla değiştirin.
-4. GitHub'da **Issues → Labels** sayfasından süreç etiketlerini oluşturun (bkz. [Etiketler](#etiketler)).
+4. GitHub'da **Actions → Etiketleri Kur → Run workflow** ile süreç etiketlerini oluşturun (bkz. [Etiketler](#etiketler)).
 5. **Issues → New issue → 01 · Yeni kart talebi** ile ilk kartınızın gereksinimlerini yazın.
 
 ## Çalışma akışı
@@ -53,7 +53,16 @@ PR açıldığında açıklama kutusu `.github/pull_request_template.md` ile dol
 
 ### Etiketler
 
-Etiketler şablondan türeyen repolara **kopyalanmaz**, her yeni repoda oluşturulması gerekir. Formların kullandığı etiketler:
+Etiketler şablondan türeyen repolara **kopyalanmaz**, her yeni repoda oluşturulması gerekir. Bunun için depodaki [Etiketleri Kur iş akışını](.github/workflows/setup-labels.yml) kullanın:
+
+1. Yeni reponuzda **Actions** sekmesini açın; Actions kapalıysa etkinleştirin.
+2. **Etiketleri Kur** iş akışını seçin.
+3. **Run workflow** menüsünde varsayılan dalı seçip çalıştırın.
+4. Çalışma başarıyla tamamlandığında etiketleri **Issues → Labels** sayfasından kontrol edin.
+
+İş akışı süreç, tür ve disiplin etiketlerini oluşturur. Yeniden çalıştırıldığında aynı adlı etiketlerin renk ve açıklamalarını iş akışındaki değerlere göre günceller. Etiket tanımlarını değiştirmek için `.github/workflows/setup-labels.yml` dosyasını düzenleyin. Elle kurulum tercih ederseniz aynı tanımları **Issues → Labels** üzerinden de oluşturabilirsiniz.
+
+Issue formlarının kullandığı etiketler:
 
 | Etiket | Renk | Açıklama |
 |---|---|---|
@@ -112,7 +121,8 @@ project-root/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/          # 01, 02, 03 formları ve config.yml
 │   ├── workflows/
-│   │   └── ci.yml
+│   │   ├── ci.yml
+│   │   └── setup-labels.yml     # Süreç etiketlerini oluşturur/günceller
 │   └── pull_request_template.md
 ├── hardware/                    # KiCad dosyaları burada
 │   ├── Project.kicad_pro
