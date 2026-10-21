@@ -54,7 +54,19 @@ def find_kicad_cli() -> str | None:
     return str(next((path for path in candidates if path.is_file()), "")) or None
 
 
-def resolve_input(value: str | None, project_dir: Path, suffix: str, label: str) -> Path | None:
+def resolve_input(
+    value: str | None,
+    project_dir: Path,
+    suffix: str,
+    label: str,
+    search_dir: Path | None = None,
+) -> Path | None:
+    """Return the requested KiCad file.
+
+    Explicit relative paths are resolved against ``project_dir`` (repo root).
+    Automatic discovery looks inside ``search_dir`` (e.g. ``hardware/``).
+    """
+    search_dir = search_dir or project_dir
     if value:
         path = Path(value).expanduser()
         if not path.is_absolute():
@@ -67,7 +79,7 @@ def resolve_input(value: str | None, project_dir: Path, suffix: str, label: str)
         return path
 
     candidates = sorted(
-        (p for p in project_dir.iterdir() if p.is_file() and p.suffix.lower() == suffix),
+        (p for p in search_dir.iterdir() if p.is_file() and p.suffix.lower() == suffix),
         key=lambda p: p.name.casefold(),
     )
     if not candidates:
@@ -75,7 +87,7 @@ def resolve_input(value: str | None, project_dir: Path, suffix: str, label: str)
     if len(candidates) == 1:
         return candidates[0]
     for candidate in candidates:
-        if candidate.stem.casefold() == project_dir.name.casefold():
+        if candidate.stem.casefold() in (project_dir.name.casefold(), search_dir.name.casefold()):
             return candidate
     choices = "\n  ".join(p.name for p in candidates)
     raise ValueError(f"Birden fazla {label} dosyası bulundu. --{label} ile seçim yapın:\n  {choices}")
@@ -227,18 +239,28 @@ def build(args: argparse.Namespace) -> int:
         print(f"Proje klasörü bulunamadı: {project_dir}", file=sys.stderr)
         return 2
 
+    # KiCad dosyalarının bulunduğu klasör (varsayılan: <proje>/hardware).
+    # Klasör yoksa eski düzenle uyumlu kalmak için proje köküne geri döner.
+    hardware_dir = Path(args.hardware_dir).expanduser()
+    if not hardware_dir.is_absolute():
+        hardware_dir = project_dir / hardware_dir
+    hardware_dir = hardware_dir.resolve()
+    if not hardware_dir.is_dir():
+        print(f"[INFO] {hardware_dir} bulunamadı; KiCad dosyaları proje kökünde aranacak.")
+        hardware_dir = project_dir
+
     try:
-        schematic = resolve_input(args.schematic, project_dir, ".kicad_sch", "schematic")
-        board = resolve_input(args.board, project_dir, ".kicad_pcb", "board")
+        schematic = resolve_input(args.schematic, project_dir, ".kicad_sch", "schematic", hardware_dir)
+        board = resolve_input(args.board, project_dir, ".kicad_pcb", "board", hardware_dir)
     except ValueError as exc:
         print(f"Hata: {exc}", file=sys.stderr)
         return 2
 
     if schematic is None:
-        print(f"{project_dir} içinde .kicad_sch bulunamadı; tüm aşamalar şematik gerektirir.", file=sys.stderr)
+        print(f"{hardware_dir} içinde .kicad_sch bulunamadı; tüm aşamalar şematik gerektirir.", file=sys.stderr)
         return 2
     try:
-        phase = detect_phase(schematic, project_dir)
+        phase = detect_phase(schematic, schematic.parent)
     except (OSError, ValueError) as exc:
         print(f"PHASE bilgisi okunamadı: {exc}", file=sys.stderr)
         return 2
@@ -246,7 +268,7 @@ def build(args: argparse.Namespace) -> int:
     write_phase_output(phase)
 
     if phase != "draft" and board is None:
-        print(f"{phase} aşaması için kök dizinde .kicad_pcb dosyası gerekli.", file=sys.stderr)
+        print(f"{phase} aşaması için {hardware_dir} içinde .kicad_pcb dosyası gerekli.", file=sys.stderr)
         return 2
 
     title_block_files = [schematic]
@@ -411,6 +433,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--project-dir", type=Path, default=script_root,
                         help="Proje klasörü (varsayılan: scripts/ klasörünün üst dizini).")
+    parser.add_argument("--hardware-dir", type=Path, default=Path("hardware"),
+                        help="KiCad dosyalarının klasörü; göreli yol proje köküne göredir (varsayılan: hardware).")
     parser.add_argument("--schematic", help="Şematik dosyası; göreli yollar proje köküne göredir.")
     parser.add_argument("--board", help="PCB dosyası; göreli yollar proje köküne göredir.")
     parser.add_argument("--kicad-cli", help="kicad-cli çalıştırılabilir dosyasının yolu.")
