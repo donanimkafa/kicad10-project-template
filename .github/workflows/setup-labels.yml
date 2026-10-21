@@ -1,0 +1,39 @@
+name: Etiketleri Kur
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Etiketleri oluştur veya güncelle
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          label() { gh label create "$1" --color "$2" --description "$3" --force; }
+
+          # Süreç aşamaları
+          label "stage:requirements" "1D76DB" "Aşama 0: gereksinim"
+          label "stage:research"     "5319E7" "Aşama 1: araştırma / parça seçimi"
+          label "stage:schematic"    "0E8A16" "Aşama 2: şematik"
+          label "stage:layout"       "FBCA04" "Aşama 3: layout"
+          label "stage:review"       "F9A825" "Aşama 4: inceleme"
+          label "stage:release"      "D93F0B" "Aşama 6: release / üretim"
+          label "stage:bringup"      "B60205" "Aşama 9: test ve bring-up"
+
+          # Türler
+          label "type:board"    "C5DEF5" "Kart talebi"
+          label "type:research" "D4C5F9" "Araştırma"
+          label "type:test"     "F9D0C4" "Test raporu"
+          label "type:bug"      "EE0701" "Tasarım hatası"
+
+          # Disiplinler
+          label "power"             "FF9800" "Güç tasarımı"
+          label "rf"                "9C27B0" "RF"
+          label "mechanical-impact" "607D8B" "Mekanik etkisi var"
+          label "needs-fw-review"   "00BCD4" "Firmware incelemesi gerekli"
