@@ -25,6 +25,8 @@ Company: Donanimkafa
 
 ### Added
 
+- Add a 64 x 64 PCB icon and update the KiCad selector name and Turkish description to Donanimkafa - KiCad 10.
+
 - Package the cover as a KiCad user template with metadata, an allowlisted ZIP builder and installation instructions.
 
 - Add an editable A3 schematic cover with project metadata, a manual contents index, PCB image placeholders and design notes.

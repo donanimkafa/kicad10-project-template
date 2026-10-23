@@ -255,7 +255,7 @@ varsa paketleme hata verir. Taşınabilirlik için göreli `Sheetfile` yolları 
 2. ZIP içindeki `kicad10-project-template` klasörünü bu klasörün altına çıkarın.
    Sonuç `<kullanıcı şablonları>/kicad10-project-template/meta/info.html` olmalıdır.
 3. Proje oluşturma ekranını yeniden açıp kullanıcı şablonları listesinden
-   **Donanimkafa - A3 Proje Kapagi** öğesini seçin.
+   **Donanimkafa - KiCad 10** öğesini seçin. Şablon, devre kartı simgesiyle görünür.
 4. Yeni proje adı ve konumunu belirleyin. Oluşturulan projedeki `USAGE.md`
    dosyası, kapak alanlarının nasıl düzenleneceğini açıklar.
 
