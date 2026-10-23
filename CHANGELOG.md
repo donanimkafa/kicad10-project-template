@@ -21,6 +21,10 @@ Company: Donanimkafa
 
 ### Added
 
+- Package the cover as a KiCad user template with metadata, an allowlisted ZIP builder and installation instructions.
+
+- Add an editable A3 schematic cover with project metadata, a manual contents index, PCB image placeholders and design notes.
+
 - Document the Issue → working branch → PR → main → version tag workflow, with early Draft PRs for CI checks and release preparation guidance.
 
 ### Changed

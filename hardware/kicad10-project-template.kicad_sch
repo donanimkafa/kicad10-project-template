@@ -3,17 +3,1687 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "7e15e6e1-e0da-4828-9eff-01b53389ad0b")
-	(paper "A4")
+	(paper "A3")
+	(title_block
+		(title "${BOARD_NAME}")
+		(date "2026-10-21")
+		(rev "v1.0.0")
+		(company "Donanimkafa")
+	)
 	(lib_symbols)
+	(rectangle
+		(start 22.86 144.78)
+		(end 99.06 210.82)
+		(stroke
+			(width 0.762)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "2c33483d-8b37-4a77-93f6-907d575aaff7")
+	)
+	(rectangle
+		(start 223.52 143.51)
+		(end 400.05 250.19)
+		(stroke
+			(width 0.762)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "57623580-d742-4c73-812d-da7e5c76365b")
+	)
+	(rectangle
+		(start 25.07 228.6)
+		(end 63.5 254)
+		(stroke
+			(width 0.762)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "6fb4b691-facc-4b98-86eb-14e8e85808e9")
+	)
+	(rectangle
+		(start 68.23 228.6)
+		(end 106.68 254)
+		(stroke
+			(width 0.762)
+			(type dash)
+			(color 255 173 0 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "b5bd9ce1-cb53-43e1-9940-9db0d1ce8119")
+	)
+	(rectangle
+		(start 149.86 228.6)
+		(end 187.96 254)
+		(stroke
+			(width 0.762)
+			(type dash)
+			(color 255 250 0 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "bf46ffce-42b1-4a8d-a894-76606b618c83")
+	)
+	(rectangle
+		(start 109.22 228.6)
+		(end 147.32 254)
+		(stroke
+			(width 0.762)
+			(type dash)
+			(color 255 0 15 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "c44c8779-806a-479e-8837-4e82808785eb")
+	)
+	(rectangle
+		(start 111.76 144.78)
+		(end 187.96 210.82)
+		(stroke
+			(width 0.762)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "fbb590ee-9182-47de-a161-5510317fd53d")
+	)
+	(text "30"
+		(exclude_from_sim no)
+		(at 215 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "02cd6ef9-e219-47ff-8dd8-665d6eef6516")
+	)
+	(text "2"
+		(exclude_from_sim no)
+		(at 27 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "03dde8ec-0577-467d-85e9-1c1498ab057c")
+	)
+	(text "24"
+		(exclude_from_sim no)
+		(at 215 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "06a47673-2675-4207-b818-8ce11fac9b3f")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "074fd667-1229-41e5-b095-0e27638a11da")
+	)
+	(text "${SHEET_NAME_2}"
+		(exclude_from_sim no)
+		(at 43 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#2")
+		)
+		(uuid "0a168300-feea-4ccd-b435-3638d30dc1be")
+	)
+	(text "6"
+		(exclude_from_sim no)
+		(at 27 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "0b92709d-c227-4e39-ab22-8dde2da28ec0")
+	)
+	(text "PROJE NOTLARI"
+		(exclude_from_sim no)
+		(at 226 140 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 2.5 2.5)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "0d3d1cab-13da-40e5-b04f-d723e448f496")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "0e23ae45-802f-4016-939f-f282fafd1d31")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "0fde4e77-3371-4614-b033-2b041dff0b44")
+	)
+	(text "REV: ${REVISION}"
+		(exclude_from_sim no)
+		(at 315 36 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "10952dc8-36b7-4fab-a44c-1835ab7a7f67")
+	)
+	(text "Genel tasarım\naçıklamaları."
+		(exclude_from_sim no)
+		(at 26.67 237.49 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "1601f0d3-f7da-4e7f-8749-c792f939dd33")
+	)
+	(text "Parça seçimi ve\nmontaj notları."
+		(exclude_from_sim no)
+		(at 69.85 237.49 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "185c5274-ec34-41eb-b75c-6573ac448eb0")
+	)
+	(text "7"
+		(exclude_from_sim no)
+		(at 27 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "19662c09-541e-4e00-8f99-9ade4cf7e09a")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "1a36e866-2b26-49a7-a41d-7135c052270e")
+	)
+	(text "8"
+		(exclude_from_sim no)
+		(at 27 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "1d9be6f4-85ec-44b5-8185-3965eb412255")
+	)
+	(text "28"
+		(exclude_from_sim no)
+		(at 215 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "1e15165b-e194-4c44-85e3-e660e7c84a73")
+	)
+	(text "BÖLÜM"
+		(exclude_from_sim no)
+		(at 137 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "2089c3cc-3011-49f4-ac3a-0e2ee87971a9")
+	)
+	(text "BÖLÜM"
+		(exclude_from_sim no)
+		(at 231 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "20f6559e-081c-4c8f-afd4-5661831a9308")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "21ef1fa2-2ab2-4603-8af0-9a96857d41d3")
+	)
+	(text "PCB görseli buraya eklenir"
+		(exclude_from_sim no)
+		(at 30 179 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "220429d1-92e1-484e-8934-c74c1e3d6940")
+	)
+	(text "25"
+		(exclude_from_sim no)
+		(at 215 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "237997ba-a300-4d63-8e3d-a50f69ce1fe2")
+	)
+	(text "10"
+		(exclude_from_sim no)
+		(at 27 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "24bcae18-b835-44bb-9cb3-2726f6b625db")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "2c602b0f-385f-49e6-b35f-eb49f7f50fd9")
+	)
+	(text "${SHEET_NAME_6}"
+		(exclude_from_sim no)
+		(at 43 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#")
+		)
+		(uuid "2f3a6ba7-8b63-4678-804e-5b7761d1b4ba")
+	)
+	(text "ALT GÖRÜNÜŞ"
+		(exclude_from_sim no)
+		(at 122 140 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 2.5 2.5)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "30d3eac5-c29d-451c-a393-73622b680203")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "35e69774-45c4-4cee-9c4c-162c6cad165f")
+	)
+	(text "40"
+		(exclude_from_sim no)
+		(at 309 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "3899546d-a9d4-472e-b39a-bb6967f36f96")
+	)
+	(text "BİLGİ"
+		(exclude_from_sim no)
+		(at 26.67 232.49 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "3b73ceb9-050e-4a4c-aa0b-0afc6b034af5")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "3be66163-5ca8-4ebd-8dfc-ba960a211945")
+	)
+	(text "ÜST GÖRÜNÜŞ"
+		(exclude_from_sim no)
+		(at 24 140 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 2.5 2.5)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "3fbdcd30-8de0-4881-87a7-8e5e961729bf")
+	)
+	(text "18"
+		(exclude_from_sim no)
+		(at 121 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "4120b31e-82f0-4123-9662-b90202accdd7")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "4123462e-4b29-4c70-8b5c-962b566b99c1")
+	)
+	(text "${SHEET_NAME_9}"
+		(exclude_from_sim no)
+		(at 43 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#7")
+		)
+		(uuid "4196da2f-b1ff-4488-95fe-f81c2683299e")
+	)
+	(text "${SHEET_NAME_10}"
+		(exclude_from_sim no)
+		(at 43 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#10")
+		)
+		(uuid "46fce84d-8eba-4c0d-b80e-b5949897edaf")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "4c67317b-0fd2-4cfd-a4ec-49ba5d1d9948")
+	)
+	(text "DRAFT  /  Şematik geliştirme aşamasında.\nPRELIMINARY  /  Ön inceleme; bulgular olabilir.\nCHECKED  /  ERC ve DRC kontrolleri zorunlu.\nRELEASE  /  Onaylı üretim sürümü."
+		(exclude_from_sim no)
+		(at 225.298 186.436 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 5.08 5.08)
+			)
+			(justify left top)
+		)
+		(uuid "4d8db86a-122f-405c-a65b-528032e0ef05")
+	)
+	(text "4"
+		(exclude_from_sim no)
+		(at 27 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "5049c095-a584-4721-806b-2b4572b9ba39")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "507c2243-cecd-4e48-9ef2-73d034350acf")
+	)
+	(text "Güç ve güvenlik\nkontrolleri."
+		(exclude_from_sim no)
+		(at 111.252 236.474 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "50b57ed0-bf08-46cf-ba61-f4cb7b24e261")
+	)
+	(text "BÖLÜM"
+		(exclude_from_sim no)
+		(at 325 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "5152fa58-f987-4c87-81cf-6696eb596287")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "51fb011a-5d65-47bd-bcb2-52339eb06e56")
+	)
+	(text "22"
+		(exclude_from_sim no)
+		(at 215 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "534d61bf-bd8b-4b8d-b278-b42888790ee7")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "55630aa0-bd32-4d16-8c31-4f8463655585")
+	)
+	(text "11"
+		(exclude_from_sim no)
+		(at 121 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "5dcdb959-ead8-4e77-b4f1-dc0bf9fd925b")
+	)
+	(text "PCB görseli buraya eklenir"
+		(exclude_from_sim no)
+		(at 128 179 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+			)
+			(justify left top)
+		)
+		(uuid "5e8190a2-a8b4-4ea5-bd4a-89e1c33d99fe")
+	)
+	(text "DİKKAT"
+		(exclude_from_sim no)
+		(at 69.85 232.49 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "5f9305ef-b0b6-42c2-893e-86b3f17dc34b")
+	)
+	(text "36"
+		(exclude_from_sim no)
+		(at 309 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "61ab1575-a2b1-4c78-964f-e768279d4665")
+	)
+	(text "21"
+		(exclude_from_sim no)
+		(at 215 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "621b7f09-e036-4310-90b1-e69ac55489e3")
+	)
+	(text "20"
+		(exclude_from_sim no)
+		(at 121 127.3 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "64378dc1-cc2d-4652-b766-0e8783150022")
+	)
+	(text "${SHEET_NAME_4}"
+		(exclude_from_sim no)
+		(at 43 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#4")
+		)
+		(uuid "65605bef-14d7-4606-b976-df1db981c3a0")
+	)
+	(text "3"
+		(exclude_from_sim no)
+		(at 27 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "6f4a647f-15fe-48dc-b654-41a523dfe334")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "7224decc-fcae-4403-8b5d-53e64a46b029")
+	)
+	(text "${SHEET_NAME_5}"
+		(exclude_from_sim no)
+		(at 43 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#5")
+		)
+		(uuid "75acaf8d-5228-4252-80bf-d6cce55878e9")
+	)
+	(text "33"
+		(exclude_from_sim no)
+		(at 309 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "75f1fd1e-6a3e-46d8-80c5-de677cec999a")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "77e23787-2fe3-4428-bbd3-053a809a1fd6")
+	)
+	(text "14"
+		(exclude_from_sim no)
+		(at 121 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "796b9127-f877-4e47-8ef6-7ff4aa756c71")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "79e7bf97-0466-452a-b0bb-567e51570214")
+	)
+	(text "SAYFA"
+		(exclude_from_sim no)
+		(at 306 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "7acb061e-936e-4d0c-baf4-ac357d13de45")
+	)
+	(text "23"
+		(exclude_from_sim no)
+		(at 215 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "7aefb53d-55b8-430d-9253-a2583c5a1488")
+	)
+	(text "15"
+		(exclude_from_sim no)
+		(at 121 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "7af774d7-10f6-491e-a086-591a36ca6b2a")
+	)
+	(text "38"
+		(exclude_from_sim no)
+		(at 309 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "7e8f5d17-753a-4e51-a248-74ab0030e459")
+	)
+	(text "SAYFA"
+		(exclude_from_sim no)
+		(at 24 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "82da102c-6da2-4283-90ec-e256bf7bd8cf")
+	)
+	(text "31"
+		(exclude_from_sim no)
+		(at 309 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "83599491-deac-4e1b-97d2-9f42a494f4d3")
+	)
+	(text "FAZ: ${PHASE}   |   PROJE: ${PROJECT_CODE}"
+		(exclude_from_sim no)
+		(at 24 39 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "89506818-1fa1-4ea8-9b72-e20436298350")
+	)
+	(text "29"
+		(exclude_from_sim no)
+		(at 215 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "8ac090fe-a792-46e6-8bec-d3eb5104074d")
+	)
+	(text "KRİTİK"
+		(exclude_from_sim no)
+		(at 111.252 231.474 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "8d854c9f-4687-4b4d-a7b7-cfa9a68539aa")
+	)
+	(text "13"
+		(exclude_from_sim no)
+		(at 121 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "92cdf44b-183f-4a88-b69d-4bd0b6d3bda7")
+	)
+	(text "${BOARD_NAME}"
+		(exclude_from_sim no)
+		(at 24 23 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "92eb33de-481f-4c06-baf4-b35e9eabf23b")
+	)
+	(text "${SHEET_NAME_8}"
+		(exclude_from_sim no)
+		(at 43 115.9 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#8")
+		)
+		(uuid "95c3c7ce-faa4-40fb-94a1-f08105eceae7")
+	)
+	(text "34"
+		(exclude_from_sim no)
+		(at 309 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "95d738e3-21df-48ff-9a0c-a5b80ad1e15e")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "9a3049db-7aea-421e-888e-ad72f5711eab")
+	)
+	(text "26"
+		(exclude_from_sim no)
+		(at 215 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "9b2c6f12-99e3-4417-94e7-f81d1a36664d")
+	)
+	(text "LAYOUT"
+		(exclude_from_sim no)
+		(at 152.4 230.966 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.6 1.6)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "a1823242-36b6-4333-b3fa-311cdcbab497")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "a186ccc8-0551-4c75-b5b1-70d7ad0433ae")
+	)
+	(text "${PROJECT_DESCRIPTION}"
+		(exclude_from_sim no)
+		(at 226.568 154.432 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 5.08 5.08)
+			)
+			(justify left top)
+		)
+		(uuid "a531eda0-c137-44cb-9734-94504106ca53")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "a8821163-18cd-482b-b91a-b821f84199d4")
+	)
+	(text "12"
+		(exclude_from_sim no)
+		(at 121 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "a8ce1793-113f-462a-be99-d3efc14c3833")
+	)
+	(text "32"
+		(exclude_from_sim no)
+		(at 309 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "ade07a6a-ead1-4c45-9ef2-9712fbd0fe45")
+	)
+	(text "SAYFA"
+		(exclude_from_sim no)
+		(at 118 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "adf370d1-473f-46b2-8a29-51dd3fa194f7")
+	)
+	(text "TASARIM NOTLARI"
+		(exclude_from_sim no)
+		(at 24 220 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 2.3 2.3)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "af4f5fc7-67e0-444a-863c-ec4d8f09fd10")
+	)
+	(text "${SHEET_NAME_1}"
+		(exclude_from_sim no)
+		(at 43 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#1")
+		)
+		(uuid "b5f25307-5e30-49be-af27-fe0c9f7b66fe")
+	)
+	(text "19"
+		(exclude_from_sim no)
+		(at 121 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "b6a7b004-6353-43f9-9ac3-6d8834174a88")
+	)
+	(text "SAYFA"
+		(exclude_from_sim no)
+		(at 212 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "b79dec7a-6430-41e3-ad54-8061721c7081")
+	)
+	(text "Yerleşim ve\niz yönlendirme."
+		(exclude_from_sim no)
+		(at 152.4 235.966 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "bb212105-1507-487c-b691-96f9cdd17532")
+	)
+	(text "BÖLÜM"
+		(exclude_from_sim no)
+		(at 43 65 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 7 1)
+			)
+			(justify left top)
+		)
+		(uuid "bb2a0140-b98f-442b-99e3-12d634092344")
+	)
+	(text "17"
+		(exclude_from_sim no)
+		(at 121 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "c107c7a2-8deb-4887-a442-93e6c0462585")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "c4f8e629-8322-4df2-b7d8-39be196c542e")
+	)
+	(text "39"
+		(exclude_from_sim no)
+		(at 309 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "c6c2309b-c482-40b3-8631-a70aa8fcdc23")
+	)
+	(text "ŞEMATİK İÇİNDEKİLER"
+		(exclude_from_sim no)
+		(at 24 54 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+				(color 255 0 8 1)
+			)
+			(justify left top)
+		)
+		(uuid "c9d5beac-c8e6-4e81-a420-396c54e9d576")
+	)
+	(text "1"
+		(exclude_from_sim no)
+		(at 27 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cbe44dde-d193-4070-810f-b84cd9bad0bf")
+	)
+	(text "35"
+		(exclude_from_sim no)
+		(at 309 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cbfe9230-784d-463f-b953-8ede61af19fe")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 76 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cd4a7313-8123-4530-b499-240b2bb39d3d")
+	)
+	(text "9"
+		(exclude_from_sim no)
+		(at 27 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cd4b8134-11b8-4e72-86fe-a5060ba6970e")
+	)
+	(text "${ISSUE_DATE}"
+		(exclude_from_sim no)
+		(at 315 23 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "cdea8d26-09cf-4d2e-88bc-95dd40f1300f")
+	)
+	(text "${SHEET_NAME_7}"
+		(exclude_from_sim no)
+		(at 43 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#7")
+		)
+		(uuid "cf3e5540-9b56-4f83-90b5-97c843bbed7e")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cfc21dc6-b6f5-4cd4-82aa-417f70a576ce")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "cfc82b0d-e01c-4e16-8682-0c615efb2210")
+	)
+	(text "37"
+		(exclude_from_sim no)
+		(at 309 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "d0e555fe-273a-4b5c-a2a7-e2f5cf260bc3")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "dd328b4d-4580-4a4c-b5d7-b67b62cae677")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 93.1 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "e72f2ddb-f899-448e-b46e-55a9c4cd7750")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "e77bc285-ceb9-4660-9383-914d527c5d8d")
+	)
+	(text "${SHEET_NAME_3}"
+		(exclude_from_sim no)
+		(at 43 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+			(href "#3")
+		)
+		(uuid "e7b749b4-e97b-4ba6-af12-839211dd3343")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 137 121.6 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "eb07051f-460e-403e-90e5-1b9a55e22fe2")
+	)
+	(text "27"
+		(exclude_from_sim no)
+		(at 215 110.2 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "eeb4546f-757d-48f6-9ee4-56bef9ed0499")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 81.7 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "f1234e7e-ac3f-4213-aed9-aa4100fac453")
+	)
+	(text "İçindekiler elle güncellenir.\nPCB görselleri otomatik oluşturulmaz.\nÜretim için etiketli Release dosyalarını kullanın."
+		(exclude_from_sim no)
+		(at 225.298 223.774 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 5.08 5.08)
+			)
+			(justify left top)
+		)
+		(uuid "f21000b3-2016-4855-a1e1-850cc52450a9")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 325 87.4 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "f789205b-2f2a-407d-837a-26c8d97cbcf9")
+	)
+	(text "5"
+		(exclude_from_sim no)
+		(at 27 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "f7d646b6-d710-4530-8497-093cc0b2d6d0")
+	)
+	(text "16"
+		(exclude_from_sim no)
+		(at 121 104.5 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "fbe732a2-598f-4779-8839-d5823e06f0e3")
+	)
+	(text "..................................."
+		(exclude_from_sim no)
+		(at 231 98.8 0)
+		(effects
+			(font
+				(face "Arial")
+				(size 3.175 3.175)
+			)
+			(justify left top)
+		)
+		(uuid "fe2706a6-99d5-4083-b06d-5ef62249b896")
+	)
+	(polyline
+		(pts
+			(xy 212 72) (xy 296 72)
+		)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(uuid "3284bc46-fbec-486b-bdb2-b5edb7cbaa15")
+	)
+	(polyline
+		(pts
+			(xy 118 72) (xy 202 72)
+		)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(uuid "7cdd97fe-592e-4d49-a482-385fe185aa79")
+	)
+	(polyline
+		(pts
+			(xy 24 72) (xy 108 72)
+		)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(uuid "7dd07f5d-1537-4624-9013-44188e813694")
+	)
+	(polyline
+		(pts
+			(xy 306 72) (xy 390 72)
+		)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(uuid "92d35d4b-bbd0-4b5f-9a47-398e1d5e8e2e")
+	)
+	(sheet
+		(at 5.08 308.61)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "42e3c8ad-b90c-446f-9250-92816b1f196f")
+		(property "Sheetname" "Block Diagram"
+			(at 5.08 307.8984 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Block Diagram.kicad_sch"
+			(at 5.08 313.0046 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad10-project-template"
+				(path "/7e15e6e1-e0da-4828-9eff-01b53389ad0b"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 110.49 309.88)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "6b66c702-c23b-43cf-a5f9-f15afd9a16e3")
+		(property "Sheetname" "Revision History"
+			(at 110.49 309.1684 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Revision History.kicad_sch"
+			(at 110.49 314.2746 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad10-project-template"
+				(path "/7e15e6e1-e0da-4828-9eff-01b53389ad0b"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 73.66 307.34)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "c31c33b2-3f41-45c7-bbed-22decd8267f2")
+		(property "Sheetname" "Project Architecture"
+			(at 73.66 306.6284 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Project Architecture.kicad_sch"
+			(at 73.66 311.7346 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad10-project-template"
+				(path "/7e15e6e1-e0da-4828-9eff-01b53389ad0b"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 35.56 307.34)
+		(size 12.7 5.08)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "c6b817e1-89e0-4e5b-a40b-957ec954f55b")
+		(property "Sheetname" "Power - Sequencing"
+			(at 35.56 306.6284 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Power - Sequencing.kicad_sch"
+			(at 35.56 313.0046 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "kicad10-project-template"
+				(path "/7e15e6e1-e0da-4828-9eff-01b53389ad0b"
+					(page "3")
+				)
+			)
+		)
+	)
 	(sheet_instances
 		(path "/"
 			(page "1")
 		)
 	)
 	(embedded_fonts no)
-(title_block
-  (rev "v1.0.0")
-  (date "2026-10-21")
-  (company "Donanimkafa")
-)
 )

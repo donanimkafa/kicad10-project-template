@@ -8,7 +8,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "v1.0.0"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -383,7 +383,23 @@
       "dashed_lines_gap_length_ratio": 3.0,
       "default_line_thickness": 6.0,
       "default_text_size": 50.0,
-      "field_names": [],
+      "field_names": [
+        {
+          "name": "Manufacturer",
+          "url": false,
+          "visible": false
+        },
+        {
+          "name": "MPN",
+          "url": false,
+          "visible": false
+        },
+        {
+          "name": "Notes",
+          "url": false,
+          "visible": false
+        }
+      ],
       "hop_over_size_choice": 0,
       "intersheets_ref_own_page": false,
       "intersheets_ref_prefix": "",
@@ -405,7 +421,7 @@
     "meta": {
       "version": 1
     },
-    "page_layout_descr_file": "${KIPRJMOD}/sheet/company-sheet-A4.kicad_wks",
+    "page_layout_descr_file": "${KIPRJMOD}/sheet/company-sheet-A3.kicad_wks",
     "plot_directory": "",
     "reuse_designators": true,
     "subpart_first_id": 65,
@@ -424,15 +440,59 @@
     [
       "7e15e6e1-e0da-4828-9eff-01b53389ad0b",
       "kicad10-project-template"
+    ],
+    [
+      "42e3c8ad-b90c-446f-9250-92816b1f196f",
+      "Block Diagram"
+    ],
+    [
+      "c6b817e1-89e0-4e5b-a40b-957ec954f55b",
+      "Power - Sequencing"
+    ],
+    [
+      "c31c33b2-3f41-45c7-bbed-22decd8267f2",
+      "Project Architecture"
+    ],
+    [
+      "6b66c702-c23b-43cf-a5f9-f15afd9a16e3",
+      "Revision History"
+    ],
+    [
+      "2776d93f-3807-430c-b47a-cfc1bb2aaa2e",
+      "Sayfa 1"
+    ],
+    [
+      "800c0cf8-7b38-4158-b1fb-b07c96d0d29e",
+      "Sayfa 2"
     ]
   ],
   "text_variables": {
+    "BOARD_NAME": "",
     "DESIGNER": "Oğuz Özdil",
     "KICAD_VERSION": "",
-    "PHASE": "Draft",
+    "PHASE": "DRAFT",
     "PROJECT_CODE": "02000",
+    "PROJECT_DESCRIPTION": "Kartın amacını ve kapsamını buraya yazın.",
     "REVIEWER": "",
-    "REVISION": ""
+    "SHEET_NAME_1": "",
+    "SHEET_NAME_10": "",
+    "SHEET_NAME_11": "",
+    "SHEET_NAME_12": "",
+    "SHEET_NAME_13": "",
+    "SHEET_NAME_14": "",
+    "SHEET_NAME_15": "",
+    "SHEET_NAME_16": "",
+    "SHEET_NAME_17": "",
+    "SHEET_NAME_18": "",
+    "SHEET_NAME_19": "",
+    "SHEET_NAME_2": "Block Diagram",
+    "SHEET_NAME_3": "Power - Sequencing",
+    "SHEET_NAME_4": "Project Architecture",
+    "SHEET_NAME_5": "Revision History",
+    "SHEET_NAME_6": "Sayfa 1",
+    "SHEET_NAME_7": "Sayfa 2",
+    "SHEET_NAME_8": "",
+    "SHEET_NAME_9": ""
   },
   "tuning_profiles": {
     "meta": {

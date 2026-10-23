@@ -159,6 +159,34 @@ Gerçek KiCad dosyalarının adı `Project` olmak zorunda değildir. Betik `hard
 
 ## Yerel kullanım
 
+### KiCad kullanıcı şablonu kurulumu
+
+`python scripts/build_kicad_template.py` komutu, mevcut kapak tasarımını
+`manufacturing/templates/kicad10-project-template.zip` olarak paketler.
+
+1. KiCad'de **Preferences → Configure Paths** ekranında
+   `KICAD_USER_TEMPLATE_DIR` klasörünü bulun.
+2. ZIP içindeki `kicad10-project-template` klasörünü bu klasörün altına çıkarın.
+   Sonuç `<kullanıcı şablonları>/kicad10-project-template/meta/info.html` olmalıdır.
+3. Proje oluşturma ekranını yeniden açıp kullanıcı şablonları listesinden
+   **Donanimkafa - A3 Proje Kapagi** öğesini seçin.
+4. Yeni proje adı ve konumunu belirleyin. Oluşturulan projedeki `USAGE.md`
+   dosyası, kapak alanlarının nasıl düzenleneceğini açıklar.
+
+Paket yalnızca KiCad dosyalarını, sayfa çerçevelerini ve kullanım notunu içerir;
+yerel yedekler ve kilit dosyaları dahil edilmez. GitHub otomasyonu için
+**Use this template** ana başlangıç yoludur; KiCad paketi CI/Issue dosyalarını içermez.
+
+### A3 kapak sayfası
+
+Ana şematik, 40 satırlık düzenlenebilir içindekiler tablosu, üst/alt PCB görsel
+alanları, proje açıklaması ve tasarım notları içeren bir A3 kapaktır.
+`BOARD_NAME`, `PROJECT_DESCRIPTION`, `PROJECT_CODE` ve `PHASE` proje text
+variable alanlarından düzenlenir. Tarih ve revizyon başlık bloğundan alınır.
+İçindekiler elle düzenlenir; boş satırlar gerçek alt sayfa oluşturmaz.
+PCB görselleri elle eklenir; KiBot görsel veya içindekiler otomasyonu eklenmemiştir.
+Kapak metinleri ve çizgileri Şematik Editörü'nde doğrudan düzenlenebilir.
+
 Gereksinimler: KiCad 10 (`kicad-cli` PATH'te olmalı), Python 3 ve proje dosyaları. Başlık bloğu güncellemesi için depo Git deposu olmalı; `CHANGELOG.md` içindeki `Company:` alanını doldurun ve bir sürüm etiketi veya changelog sürümü sağlayın.
 
 Proje kökünde PowerShell:
