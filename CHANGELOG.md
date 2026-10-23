@@ -25,6 +25,9 @@ Company: Donanimkafa
 
 ### Added
 
+- Build and distribute installable KiCad template ZIPs through a dedicated workflow and template-v* releases, independently of hardware manufacturing releases.
+- Document public template installation, updates, artifact downloads and GitHub template repository setup.
+
 - Add a 64 x 64 PCB icon and update the KiCad selector name and Turkish description to Donanimkafa - KiCad 10.
 
 - Package the cover as a KiCad user template with metadata, an allowlisted ZIP builder and installation instructions.

@@ -23,6 +23,13 @@ KiCad 10 projeleri için bu şablon iki şeyi bir arada sunar:
 
 ## Hızlı başlangıç
 
+| İhtiyaç | Başlangıç yolu |
+|---|---|
+| KiCad'in yeni proje ekranından kapak ve hiyerarşiyle başlamak | [KiCad şablonunu indirip kurun](#kicad-kullanıcı-şablonu-kurulumu) |
+| GitHub'da Issue, PR, otomatik kontrol ve üretim çıktılarıyla geliştirmek | Aşağıdaki **Use this template** adımlarını izleyin |
+
+Hazır KiCad ZIP'ini kullananların Python, Git veya KiBot kurması gerekmez; KiCad 10 yeterlidir.
+
 1. Bu sayfada **Use this template → Create a new repository** ile yeni proje reposunu oluşturun.
 2. Repoyu klonlayın ve KiCad Proje Yöneticisi'nde `hardware/kicad10-project-template.kicad_pro` dosyasını açın. Alt sayfaları kök şematik üzerinden kullanın.
 3. `CHANGELOG.md` içindeki `Company:` alanını ve proje Text Variables alanındaki kart adı, tasarımcı ve proje kodunu kendinize göre düzenleyin. Başlangıç aşaması `DRAFT` olarak ayarlıdır.
@@ -143,7 +150,8 @@ project-root/
 │   ├── ISSUE_TEMPLATE/          # 01, 02, 03 formları ve config.yml
 │   ├── workflows/
 │   │   ├── ci.yml
-│   │   └── setup-labels.yml     # Süreç etiketlerini oluşturur/günceller
+│   │   ├── setup-labels.yml     # Süreç etiketlerini oluşturur/günceller
+│   │   └── template.yml         # Kurulabilir şablon paketi ve dağıtımı
 │   └── pull_request_template.md
 ├── hardware/                    # KiCad dosyaları burada
 │   ├── kicad10-project-template.kicad_pro
@@ -241,6 +249,47 @@ devam eder. Şematik Editörü'ndeki hiyerarşi korunur.
 
 ### KiCad kullanıcı şablonu kurulumu
 
+1. [Releases sayfasında](https://github.com/donanimkafa/kicad10-project-template/releases)
+   `template-v…` etiketli bir **KiCad Template** sürümünü açın. **Assets** altından
+   `kicad10-project-template.zip` dosyasını indirin. **Source code (zip)** dosyası
+   kurulabilir şablon paketi değildir.
+2. KiCad'de **Preferences → Configure Paths** üzerinden `KICAD_USER_TEMPLATE_DIR`
+   konumunu bulun; gerekirse klasörü oluşturun.
+3. ZIP'in içindeki `kicad10-project-template` klasörünü bu konuma çıkarın.
+   Windows'ta yaygın konum `Belgeler\KiCad\10.0\template\` klasörüdür;
+   esas alınacak yol KiCad ayarlarınızda görünendir.
+4. Sonuç `<kullanıcı şablonları>/kicad10-project-template/meta/info.html`
+   olmalıdır. Araya fazladan bir ZIP klasörü girmediğini kontrol edin.
+5. Yeni proje seçicisini yeniden açıp **User Templates** altında
+   **Donanimkafa - KiCad 10** öğesini seçin; yeni proje adı ve konumunu belirleyin.
+   Görünmüyorsa KiCad'i yeniden başlatıp klasör yolunu kontrol edin.
+6. Oluşturulan projedeki `USAGE.md` dosyasını okuyun; kart adı, şirket,
+   tasarımcı, proje kodu, tarih ve revizyonu kendinize göre düzenleyin.
+
+Yeni sürüme geçerken kurulu şablon klasörünü başka bir yere yedekleyip yeni
+ZIP'teki klasörle değiştirin. Bu işlem daha önce oluşturulmuş projeleri güncellemez.
+
+Henüz şablon Release'i yoksa **Actions → KiCad Template Package** altındaki başarılı
+bir çalışmanın **KiCad-10-User-Template** artifact'ini indirin. Artifact ZIP'inden
+çıkan `kicad10-project-template.zip` dosyasını ayrıca açın. Artifact indirmek için
+GitHub oturumu gerekebilir; Release dosyaları genel dağıtım içindir.
+
+### Şablon paketini hazırlama ve yayımlama
+
+`KiCad Template Package` iş akışı `main` gönderimlerinde, `main` hedefli PR'larda
+ve **Run workflow** ile testleri çalıştırır ve kurulabilir ZIP'i artifact olarak
+hazırlar. Dağıtım için onaylı `main` commit'ine `template-v1.0.0` gibi bir etiket
+gönderin; paketleme başarılıysa ZIP ayrı bir GitHub Release'e eklenir.
+Bu etiket şablonun sürümüdür; kart üretim etiketleri olan `v*` ile ayrıdır.
+Paketleme `PHASE` değerinden bağımsızdır; boş şablonun PCB DRC'sinden geçmesi gerekmez.
+
+Depo yöneticisi GitHub'da **Settings → General → Template repository** seçeneğini
+etkinleştirerek **Use this template** yolunu açmalıdır. Genel erişim için depo
+görünürlüğü **Public** olmalıdır. Bu ayarlar iş akışı tarafından değiştirilmez.
+[GitHub şablon deposu ayarı](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
+
+Yerelde paket hazırlamak için:
+
 Paketleme betiği kök şematikten başlayarak tüm `Sheetfile` bağlantılarını izler;
 iç içe alt sayfaları dizin yapısını koruyarak pakete ekler. Mevcut proje için
 toplam yedi şematik paketlenir. Bağlı olmayan şematikler alınmaz. Eksik dosya,
@@ -249,15 +298,6 @@ varsa paketleme hata verir. Taşınabilirlik için göreli `Sheetfile` yolları 
 
 `python scripts/build_kicad_template.py` komutu, mevcut kapak tasarımını
 `manufacturing/templates/kicad10-project-template.zip` olarak paketler.
-
-1. KiCad'de **Preferences → Configure Paths** ekranında
-   `KICAD_USER_TEMPLATE_DIR` klasörünü bulun.
-2. ZIP içindeki `kicad10-project-template` klasörünü bu klasörün altına çıkarın.
-   Sonuç `<kullanıcı şablonları>/kicad10-project-template/meta/info.html` olmalıdır.
-3. Proje oluşturma ekranını yeniden açıp kullanıcı şablonları listesinden
-   **Donanimkafa - KiCad 10** öğesini seçin. Şablon, devre kartı simgesiyle görünür.
-4. Yeni proje adı ve konumunu belirleyin. Oluşturulan projedeki `USAGE.md`
-   dosyası, kapak alanlarının nasıl düzenleneceğini açıklar.
 
 Paket yalnızca KiCad dosyalarını, sayfa çerçevelerini ve kullanım notunu içerir;
 yerel yedekler ve kilit dosyaları dahil edilmez. GitHub otomasyonu için
@@ -314,7 +354,7 @@ saklamak istediğiniz önceki üretimleri bu klasörün dışında arşivleyin.
 
 `ci.yml`, `main` dalına gönderimde, `main` hedefli PR'larda ve `v*` etiketlerinde betiği çalıştırır. Çalışma dalındaki otomatik kontroller için Draft PR'ı erken açın; PR açıldıktan sonraki gönderimler de kontrol edilir. Aşama şematikteki PHASE metninden veya `.kicad_pro` içindeki PHASE text variable'ından alınır. `release` seçimi tek başına GitHub Release oluşturmaz; bunun için onaylı `main` commit'ine `v1.0.0` gibi bir etiket gönderilmelidir.
 
-İş akışı hata durumunda da oluşmuş rapor ve çıktıları artifact olarak yüklemeyi dener. Actions çalışmasındaki `KiCad-10-Manufacturing-Outputs` artifact'ini indirerek sonuçları inceleyin; başarısız çalışmanın dosyaları tamamlanmış üretim paketi sayılmaz. `release` aşamasıyla tetiklenen `v*` etiketi, kontroller başarılıysa seçili üretim dosyalarını GitHub Releases sayfasında yayımlar. CI mevcut haliyle testleri ve KiCad şablon paketleme betiğini çalıştırmaz.
+İş akışı hata durumunda da oluşmuş rapor ve çıktıları artifact olarak yüklemeyi dener. Actions çalışmasındaki `KiCad-10-Manufacturing-Outputs` artifact'ini indirerek sonuçları inceleyin; başarısız çalışmanın dosyaları tamamlanmış üretim paketi sayılmaz. `release` aşamasıyla tetiklenen `v*` etiketi, kontroller başarılıysa seçili üretim dosyalarını GitHub Releases sayfasında yayımlar. Üretim iş akışı (`ci.yml`) testleri veya şablon paketlemesini çalıştırmaz; bunları ayrı `template.yml` iş akışı yürütür.
 
 ## Üretim çıktıları
 
