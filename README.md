@@ -241,11 +241,11 @@ devam eder. Şematik Editörü'ndeki hiyerarşi korunur.
 
 ### KiCad kullanıcı şablonu kurulumu
 
-**Mevcut sınırlama:** Paketleme betiği yalnızca kök `.kicad_pro`, `.kicad_sch`,
-`.kicad_pcb`, çerçeveler ve kullanım notunu alır; yeni eklenen alt şematikleri
-henüz paketlemez. Bu nedenle şu an üretilen ZIP tek başına hiyerarşik proje için
-eksiktir. Tam projeye başlamak için GitHub **Use this template** yolunu kullanın.
-Elle paket kuracaksanız altı alt şematik dosyasını da paket klasörüne ekleyin.
+Paketleme betiği kök şematikten başlayarak tüm `Sheetfile` bağlantılarını izler;
+iç içe alt sayfaları dizin yapısını koruyarak pakete ekler. Mevcut proje için
+toplam yedi şematik paketlenir. Bağlı olmayan şematikler alınmaz. Eksik dosya,
+döngüsel bağlantı, mutlak/değişkenli yol veya `hardware/` dışına çıkan bağlantı
+varsa paketleme hata verir. Taşınabilirlik için göreli `Sheetfile` yolları kullanın.
 
 `python scripts/build_kicad_template.py` komutu, mevcut kapak tasarımını
 `manufacturing/templates/kicad10-project-template.zip` olarak paketler.

@@ -11,6 +11,8 @@ Company: Donanimkafa
 
 ### Fixed
 
+- Include all reachable hierarchical schematic files in the KiCad template ZIP, preserving relative paths and rejecting missing or non-portable references.
+
 - Resolve the root schematic through a unique matching KiCad project file so hierarchical subsheets do not make CI input selection ambiguous.
 
 - Clear previous generated manufacturing files before a new build to prevent stale outputs after phase or project name changes.

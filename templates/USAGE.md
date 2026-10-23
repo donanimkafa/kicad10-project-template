@@ -3,6 +3,8 @@
 Bu proje KiCad 10 kullanıcı şablonundan oluşturulmuştur.
 
 - Proje yöneticisinden `.kicad_pro` dosyasını açın.
+- Paket kök şematikle birlikte bağlı alt sayfaları da içerir. Sayfalar arasında
+  Şematik Editörü'nün hiyerarşi panelinden geçiş yapın.
 - Şematik editöründe Page Settings / Text Variables alanlarından `BOARD_NAME`,
   `PROJECT_DESCRIPTION`, `PROJECT_CODE`, `DESIGNER`, `REVIEWER` ve `PHASE`
   değerlerini düzenleyin.
