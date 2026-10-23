@@ -11,6 +11,8 @@ Company: Donanimkafa
 
 ### Fixed
 
+- Resolve the root schematic through a unique matching KiCad project file so hierarchical subsheets do not make CI input selection ambiguous.
+
 - Clear previous generated manufacturing files before a new build to prevent stale outputs after phase or project name changes.
 - Remove the tracked Python bytecode cache; existing ignore rules prevent it from being added again.
 - Document label setup through the existing GitHub Actions workflow, including how repeated runs update labels.

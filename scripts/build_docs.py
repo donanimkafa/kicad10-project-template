@@ -64,7 +64,8 @@ def resolve_input(
     """Return the requested KiCad file.
 
     Explicit relative paths are resolved against ``project_dir`` (repo root).
-    Automatic discovery requires exactly one matching file inside ``search_dir``.
+    A unique project file identifies the root schematic in hierarchical designs.
+    Otherwise automatic discovery requires exactly one matching file.
     """
     search_dir = search_dir or project_dir
     if value:
@@ -86,6 +87,13 @@ def resolve_input(
         return None
     if len(candidates) == 1:
         return candidates[0]
+    if suffix == ".kicad_sch":
+        projects = [p for p in search_dir.iterdir()
+                    if p.is_file() and p.suffix.lower() == ".kicad_pro"]
+        if len(projects) == 1:
+            roots = [p for p in candidates if p.stem == projects[0].stem]
+            if len(roots) == 1:
+                return roots[0]
     choices = "\n  ".join(p.name for p in candidates)
     raise ValueError(f"Birden fazla {label} dosyası bulundu. --{label} ile seçim yapın:\n  {choices}")
 
