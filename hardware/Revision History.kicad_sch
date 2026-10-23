@@ -5,4 +5,27 @@
 	(uuid "e83eb03c-efd7-4020-8b10-0c186f091f46")
 	(paper "A3")
 	(lib_symbols)
+	(text_box "[${#}] ${SHEET_NAME_${#}}"
+		(exclude_from_sim no)
+		(at 147.32 21.59 0)
+		(size 137.16 18.3317)
+		(margins 4.4999 4.4999 4.4999 4.4999)
+		(stroke
+			(width -0.0001)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(face "Times New Roman")
+				(size 6 6)
+				(thickness 1.2)
+				(bold yes)
+				(color 162 22 34 1)
+			)
+		)
+		(uuid "a4239fcc-8c8f-4cee-af40-f9f97873d353")
+	)
 )

@@ -15,6 +15,7 @@ KiCad 10 projeleri için bu şablon iki şeyi bir arada sunar:
 - [Çalışma akışı](#çalışma-akışı)
 - [Tasarım aşamaları](#tasarım-aşamaları)
 - [Proje yapısı](#proje-yapısı)
+- [Şematik hiyerarşisi ve proje ayarları](#şematik-hiyerarşisi-ve-proje-ayarları)
 - [Yerel kullanım](#yerel-kullanım)
 - [GitHub Actions](#github-actions)
 - [Üretim çıktıları](#üretim-çıktıları)
@@ -23,8 +24,8 @@ KiCad 10 projeleri için bu şablon iki şeyi bir arada sunar:
 ## Hızlı başlangıç
 
 1. Bu sayfada **Use this template → Create a new repository** ile yeni proje reposunu oluşturun.
-2. Repoyu klonlayın ve KiCad dosyalarını `hardware/` klasöründe açın.
-3. `CHANGELOG.md` içindeki `Company:` alanını kendi şirket/ekip adınızla değiştirin.
+2. Repoyu klonlayın ve KiCad Proje Yöneticisi'nde `hardware/kicad10-project-template.kicad_pro` dosyasını açın. Alt sayfaları kök şematik üzerinden kullanın.
+3. `CHANGELOG.md` içindeki `Company:` alanını ve proje Text Variables alanındaki kart adı, tasarımcı ve proje kodunu kendinize göre düzenleyin. Başlangıç aşaması `DRAFT` olarak ayarlıdır.
 4. GitHub'da **Actions → Etiketleri Kur → Run workflow** ile süreç etiketlerini oluşturun (bkz. [Etiketler](#etiketler)).
 5. **Issues → New issue → 01 · Yeni kart talebi** ile ilk kartınızın gereksinimlerini yazın.
 
@@ -113,7 +114,14 @@ Kartlar sütunlar arasında elle sürüklenir; aşama geçişi bilinçli bir kar
 | `checked` | `draft` dışındaki tüm çıktılar. ERC veya DRC bulgusu varsa iş akışı başarısız olur. Varsayılan aşamadır. |
 | `release` | `checked` ile aynı kontroller ve çıktılar. Şematikte `release` seçiliyken `v*` etiketi gönderilirse GitHub Release yayımlanır. |
 
-### Aşamayı şematikte seçme
+### Aşamayı seçme
+
+Bu şablonda `.kicad_pro` içindeki `PHASE` text variable'ı zaten tanımlıdır.
+**Schematic Setup → Project → Text Variables** üzerinden bu değeri değiştirin.
+`DRAFT` gibi büyük harfli değerler de kabul edilir. Kapaktaki aşama alanı aynı
+değişkeni kullanır. Farklı aşamayı ikinci bir yere eklemek yerine mevcut değeri düzenleyin.
+
+Alternatif olarak şematik yorum alanı kullanılabilir:
 
 1. KiCad Schematic Editor'da şematiği açın.
 2. **File → Page Settings** menüsünü açın.
@@ -125,7 +133,7 @@ Kartlar sütunlar arasında elle sürüklenir; aşama geçişi bilinçli bir kar
 
    Değeri `draft`, `preliminary`, `checked` veya `release` olarak ayarlayın. Aynı şematikte birden fazla farklı PHASE değeri bırakmayın.
 
-4. Şematiği kaydedin. `scripts/build_docs.py`, `.kicad_sch` dosyasındaki PHASE metnini okur. Alternatif olarak `.kicad_pro` içindeki `PHASE` text variable'ı da kullanılabilir. Hiçbiri yoksa `checked` kullanılır.
+4. Şematiği kaydedin. `scripts/build_docs.py`, kök `.kicad_sch` içindeki PHASE metnini ve `.kicad_pro` içindeki PHASE text variable'ını kontrol eder. İkisi de varsa aynı değerde olmalıdır; çelişki derlemeyi durdurur. Hiçbiri yoksa `checked` kullanılır. Alt sayfalardaki PHASE metinleri aşama seçiminde taranmaz.
 
 ## Proje yapısı
 
@@ -138,16 +146,24 @@ project-root/
 │   │   └── setup-labels.yml     # Süreç etiketlerini oluşturur/günceller
 │   └── pull_request_template.md
 ├── hardware/                    # KiCad dosyaları burada
-│   ├── Project.kicad_pro
-│   ├── Project.kicad_sch
-│   └── Project.kicad_pcb
-├── lib/                         # İsteğe bağlı: ortak sembol/footprint/3D
-│   ├── symbols/
-│   ├── footprints/
-│   └── 3dmodels/
+│   ├── kicad10-project-template.kicad_pro
+│   ├── kicad10-project-template.kicad_sch  # Kök / kapak
+│   ├── kicad10-project-template.kicad_pcb
+│   ├── Block Diagram.kicad_sch
+│   ├── Power - Sequencing.kicad_sch
+│   ├── Project Architecture.kicad_sch
+│   ├── Revision History.kicad_sch
+│   ├── Sayfa1.kicad_sch
+│   ├── untitled.kicad_sch
+│   └── sheet/                   # A2, A3, A4 sayfa çerçeveleri
 ├── scripts/
 │   ├── build_docs.py
-│   └── update_title_block.py
+│   ├── update_title_block.py
+│   └── build_kicad_template.py
+├── templates/                   # KiCad paket tanımı ve kullanım notu
+│   ├── meta/info.html
+│   └── USAGE.md
+├── tests/                       # Girdi seçimi testleri
 ├── manufacturing/               # Betik tarafından üretilir, commit'lenmez
 ├── CHANGELOG.md
 └── README.md
@@ -157,9 +173,79 @@ Gerçek KiCad dosyalarının adı `Project` olmak zorunda değildir. `hardware/`
 
 > **Kütüphane yolları:** KiCad dosyaları `hardware/` altında, `lib/` ise kökte olduğundan `sym-lib-table` ve `fp-lib-table` içindeki yollar `${KIPRJMOD}/../lib/...` biçiminde olmalıdır.
 
+`lib/` mevcut depoda bulunmaz; özel kütüphaneler gerektiğinde oluşturulabilir.
+
+## Şematik hiyerarşisi ve proje ayarları
+
+Mevcut tasarım yedi sayfadan oluşur:
+
+```text
+Kapak / kök şematik (1)
+├── Block Diagram (2)
+├── Power - Sequencing (3)
+├── Project Architecture (4)
+│   ├── Sayfa 1 — Sayfa1.kicad_sch (6)
+│   └── Sayfa 2 — untitled.kicad_sch (7)
+└── Revision History (5)
+```
+
+Sayfa adlarını ve numaralarını Şematik Editörü'ndeki hiyerarşiden yönetin.
+Dosya adı değişirse üst sayfadaki `Sheetfile` bağlantısını da güncelleyin.
+Kök şematik üzerinden alınan PDF, bağlı alt sayfaları içerir.
+
+### Kapak ve ortak bilgiler
+
+**Schematic Setup → Project → Text Variables** bölümündeki alanlar:
+
+| Alan | Kullanım |
+|---|---|
+| `BOARD_NAME` | Kart adı; mevcut değeri boş, yeni projede doldurun |
+| `PROJECT_CODE` | Proje kodu |
+| `PROJECT_DESCRIPTION` | Projenin amaç ve kapsam açıklaması |
+| `DESIGNER`, `REVIEWER` | Tasarımcı ve kontrol eden |
+| `PHASE` | Otomasyonun aşaması |
+| `SHEET_NAME_1` … `SHEET_NAME_19` | Kapak ve sayfa başlıklarında kullanılan, elle yönetilen sayfa adları |
+| `KICAD_VERSION` | Özel sürüm alanı; üretim betiği bu değişkeni doldurmaz |
+
+`SHEET_NAME_n` değerleri hiyerarşiden otomatik hesaplanmaz. Sayfa eklerken,
+yeniden adlandırırken veya numara değiştirirken ilgili değişkenleri de güncelleyin.
+`Revision History` sayfası da CHANGELOG ile otomatik eşitlenmez.
+
+### Bileşen alanları, net sınıfları ve bus alias
+
+`Manufacturer`, `MPN` ve `Notes` sembol alanı şablonları tanımlıdır; şematikte
+görünürlükleri kapalıdır. Değerleri parça seçimi sırasında doldurun. Bunlar BOM'a
+otomatik olarak sütun eklemez; mevcut BOM ayarlarında bu üç sütun seçili değildir.
+Özel BOM ve biçim preset listeleri henüz boştur.
+
+Mevcut net sınıfları: `Default`, `ANALOG`, `CAN_BUS`, `CLOCK`, `CONTROL`, `GND`,
+`POWER_HIGH_CURRENT`, `Power`, `RF_50R`, `RS485_BUS`, `SWITCH_NODE`, `USB2_DATA`.
+PCB ölçülerini üretici, akım ve katman yapısına göre gözden geçirin; sınıf adları
+tek başına akım taşıma veya empedans uygunluğunu garanti etmez.
+
+I²C, SPI, UART, SWD, JTAG, USB2, CAN ve RS-485 için bus alias tanımları vardır.
+Örneğin `I2C1{I2C}`, `I2C1.SCL` ve `I2C1.SDA` üyelerini temsil eder.
+Mevcut ayarlarda `CLK CMD D[0..3]` üyelerini içeren adı boş bir alias da bulunur;
+kullanmadan önce adlandırın veya kaldırın.
+
+### Proje ağacında alt sayfaların görünmesi
+
+KiCad Git entegrasyonu etkin olduğunda değişiklikleri izleyebilmek için alt
+şematik dosyalarını da Proje Yöneticisi'nde gösterir. Yalnızca kök şematiği
+görmek için proje bağlam menüsünden **Version Control → Disable Git Integration**
+seçilebilir. Bu, Git deposunu veya geçmişini silmez; diğer Git araçları çalışmaya
+devam eder. Şematik Editörü'ndeki hiyerarşi korunur.
+[KiCad Git entegrasyonu belgesi](https://docs.kicad.org/10.0/en/kicad/kicad.html#_git_integration).
+
 ## Yerel kullanım
 
 ### KiCad kullanıcı şablonu kurulumu
+
+**Mevcut sınırlama:** Paketleme betiği yalnızca kök `.kicad_pro`, `.kicad_sch`,
+`.kicad_pcb`, çerçeveler ve kullanım notunu alır; yeni eklenen alt şematikleri
+henüz paketlemez. Bu nedenle şu an üretilen ZIP tek başına hiyerarşik proje için
+eksiktir. Tam projeye başlamak için GitHub **Use this template** yolunu kullanın.
+Elle paket kuracaksanız altı alt şematik dosyasını da paket klasörüne ekleyin.
 
 `python scripts/build_kicad_template.py` komutu, mevcut kapak tasarımını
 `manufacturing/templates/kicad10-project-template.zip` olarak paketler.
@@ -179,15 +265,17 @@ yerel yedekler ve kilit dosyaları dahil edilmez. GitHub otomasyonu için
 
 ### A3 kapak sayfası
 
-Ana şematik, 40 satırlık düzenlenebilir içindekiler tablosu, üst/alt PCB görsel
+Ana şematik, düzenlenebilir içindekiler alanı, üst/alt PCB görsel
 alanları, proje açıklaması ve tasarım notları içeren bir A3 kapaktır.
 `BOARD_NAME`, `PROJECT_DESCRIPTION`, `PROJECT_CODE` ve `PHASE` proje text
 variable alanlarından düzenlenir. Tarih ve revizyon başlık bloğundan alınır.
-İçindekiler elle düzenlenir; boş satırlar gerçek alt sayfa oluşturmaz.
+İçindekilerdeki adlar `SHEET_NAME_n` değişkenleriyle elle yönetilir; boş satırlar gerçek alt sayfa oluşturmaz.
 PCB görselleri elle eklenir; KiBot görsel veya içindekiler otomasyonu eklenmemiştir.
 Kapak metinleri ve çizgileri Şematik Editörü'nde doğrudan düzenlenebilir.
 
-Gereksinimler: KiCad 10 (`kicad-cli` PATH'te olmalı), Python 3 ve proje dosyaları. Başlık bloğu güncellemesi için depo Git deposu olmalı; `CHANGELOG.md` içindeki `Company:` alanını doldurun ve bir sürüm etiketi veya changelog sürümü sağlayın.
+### Üretim betiğini çalıştırma
+
+Gereksinimler: KiCad 10, Python 3.10 veya üzeri ve Git. Betik `kicad-cli` aracını PATH'te ve yaygın kurulum konumlarında arar; gerekirse `--kicad-cli` ile yol verin. `CHANGELOG.md` içindeki `Company:` alanını doldurun ve bir sürüm etiketi veya changelog sürümü sağlayın.
 
 Proje kökünde PowerShell:
 
@@ -197,6 +285,11 @@ python scripts/build_docs.py
 ```
 
 Betik başlık bloğu alanlarını günceller ve seçilen aşamaya ait dosyaları `manufacturing/` altına yazar. Yerel çalıştırmadan önce KiCad dosyalarını kaydedin; başlık bloğu değişikliklerini commit etmeden önce gözden geçirin.
+
+Revizyon önce Git etiketinden, etiket yoksa CHANGELOG'daki ilk sürümden alınır.
+Tarih son commit tarihidir; okunamazsa changelog sürüm tarihine dönülür.
+Başlık güncellemesi kök şematik ve seçili PCB'ye uygulanır; alt sayfaların başlık
+blokları ayrı ayrı güncellenmez. CLI kullanılabilirliği dosyalar değiştirilmeden kontrol edilir.
 
 Üretim başlamadan önce seçili çıktı klasöründeki önceki BOM, Gerber/Drill ZIP,
 şematik/montaj PDF, STEP ve ERC/DRC raporları ile `build.log` temizlenir.
@@ -221,7 +314,7 @@ saklamak istediğiniz önceki üretimleri bu klasörün dışında arşivleyin.
 
 `ci.yml`, `main` dalına gönderimde, `main` hedefli PR'larda ve `v*` etiketlerinde betiği çalıştırır. Çalışma dalındaki otomatik kontroller için Draft PR'ı erken açın; PR açıldıktan sonraki gönderimler de kontrol edilir. Aşama şematikteki PHASE metninden veya `.kicad_pro` içindeki PHASE text variable'ından alınır. `release` seçimi tek başına GitHub Release oluşturmaz; bunun için onaylı `main` commit'ine `v1.0.0` gibi bir etiket gönderilmelidir.
 
-Başarılı iş akışının `manufacturing/` çıktıları Actions artifact'i olarak saklanır. `release` aşamasıyla tetiklenen `v*` etiketi, seçili üretim dosyalarını GitHub Releases sayfasında yayımlar.
+İş akışı hata durumunda da oluşmuş rapor ve çıktıları artifact olarak yüklemeyi dener. Actions çalışmasındaki `KiCad-10-Manufacturing-Outputs` artifact'ini indirerek sonuçları inceleyin; başarısız çalışmanın dosyaları tamamlanmış üretim paketi sayılmaz. `release` aşamasıyla tetiklenen `v*` etiketi, kontroller başarılıysa seçili üretim dosyalarını GitHub Releases sayfasında yayımlar. CI mevcut haliyle testleri ve KiCad şablon paketleme betiğini çalıştırmaz.
 
 ## Üretim çıktıları
 
@@ -236,6 +329,12 @@ manufacturing/
 ```
 
 `draft` aşamasında yalnızca `schematic/` PDF'i ve BOM üretilir. Diğer aşamalar PCB çıktıları da üretir.
+
+Her çalışmada `reports/build.log` da yazılır. `preliminary` Gerber paketi
+`*-preliminary-Gerber-Drill.zip` adıyla oluşturulur. KiCad kullanıcı şablon ZIP'i
+ayrı paketleme komutuyla `manufacturing/templates/` altında üretilir.
+
+Girdi seçimi testlerini çalıştırmak için: `python -B -m unittest discover -s tests -v`.
 
 ## Commit mesajı kuralı
 
