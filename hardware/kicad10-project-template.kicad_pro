@@ -279,6 +279,116 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "ANALOG",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 8,
+        "schematic_color": "rgb(196, 0, 255)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "CAN_BUS",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 5,
+        "schematic_color": "rgb(0, 118, 56)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "CLOCK",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 3,
+        "schematic_color": "rgb(113, 44, 37)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "CONTROL",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 7,
+        "schematic_color": "rgb(255, 143, 0)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "GND",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 9,
+        "schematic_color": "rgb(84, 83, 81)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "POWER_HIGH_CURRENT",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
+        "schematic_color": "rgb(255, 0, 76)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "Power",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 10,
+        "schematic_color": "rgb(255, 0, 13)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "RF_50R",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgb(167, 14, 255)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "RS485_BUS",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 4,
+        "schematic_color": "rgb(15, 229, 255)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "SWITCH_NODE",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2,
+        "schematic_color": "rgb(255, 0, 66)",
+        "tuning_profile": "",
+        "wire_width": 12
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "USB2_DATA",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 6,
+        "schematic_color": "rgb(5, 0, 255)",
+        "tuning_profile": "",
+        "wire_width": 12
       }
     ],
     "meta": {
@@ -376,7 +486,77 @@
       "sort_asc": true,
       "sort_field": "Reference"
     },
-    "bus_aliases": {},
+    "bus_aliases": {
+      "": [
+        "CLK",
+        "CMD",
+        "D[0..3]"
+      ],
+      "CAN_LOGIC": [
+        "TX",
+        "RX"
+      ],
+      "CAN_PHY": [
+        "H",
+        "L"
+      ],
+      "I2C": [
+        "SCL",
+        "SDA"
+      ],
+      "JTAG": [
+        "TCK",
+        "TMS",
+        "TDI",
+        "TDO"
+      ],
+      "RS485_LOGIC": [
+        "TX",
+        "RX",
+        "DE",
+        "RE_N"
+      ],
+      "RS485_PHY": [
+        "A",
+        "B"
+      ],
+      "SPI_CORE": [
+        "SCK",
+        "MOSI",
+        "MISO"
+      ],
+      "SPI_DEVICE": [
+        "SCK",
+        "MOSI",
+        "MISO",
+        "CS_N"
+      ],
+      "SWD": [
+        "SWDIO",
+        "SWCLK"
+      ],
+      "SWD_EXT": [
+        "SWDIO",
+        "SWCLK",
+        "SWO",
+        "RESET_N"
+      ],
+      "UART": [
+        "TX",
+        "RX"
+      ],
+      "UART_FLOW": [
+        "TX",
+        "RX",
+        "RTS",
+        "CTS"
+      ],
+      "USB2": [
+        "D+",
+        "D-",
+        "VBUS"
+      ]
+    },
     "connection_grid_size": 50.0,
     "drawing": {
       "dashed_lines_dash_length_ratio": 12.0,

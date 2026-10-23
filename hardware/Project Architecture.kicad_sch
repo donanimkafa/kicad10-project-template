@@ -2,12 +2,12 @@
 	(version 20260306)
 	(generator "eeschema")
 	(generator_version "10.0")
-	(uuid "daebdfab-8bfc-4947-bf0a-ffd758e3c6dc")
+	(uuid "dc5d2503-6e21-4e08-af19-81abdba69fda")
 	(paper "A3")
 	(lib_symbols)
 	(sheet
 		(at 172.72 58.42)
-		(size 52.07 35.56)
+		(size 52.07 31.75)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -33,7 +33,7 @@
 			)
 		)
 		(property "Sheetfile" "Sayfa1.kicad_sch"
-			(at 172.72 94.5646 0)
+			(at 172.72 90.7546 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
