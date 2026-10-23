@@ -274,6 +274,49 @@ bir çalışmanın **KiCad-10-User-Template** artifact'ini indirin. Artifact ZIP
 çıkan `kicad10-project-template.zip` dosyasını ayrıca açın. Artifact indirmek için
 GitHub oturumu gerekebilir; Release dosyaları genel dağıtım içindir.
 
+### Windows'ta PowerShell ile kurulum
+
+KiCad 10 kuruluysa aşağıdaki bloğu normal PowerShell penceresine yapıştırabilirsiniz.
+Yönetici yetkisi, Python veya Git gerekmez. Komutlar `template-v1.0.0` sürümünü
+indirir; uzaktaki bir betiği çalıştırmaz. Farklı bir sürüm için `$templateVersion`
+değerini değiştirin.
+
+Önce KiCad'deki **Preferences → Configure Paths → KICAD_USER_TEMPLATE_DIR**
+konumunu kontrol edin. Varsayılan Belgeler konumu yerine özel bir yol
+kullanıyorsanız aşağıdaki `$templateDir` satırını o yol ile değiştirin.
+
+```powershell
+& {
+    $ErrorActionPreference = 'Stop'
+    $templateVersion = 'template-v1.0.0'
+    $templateDir = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'KiCad\10.0\template'
+    $templateTarget = Join-Path $templateDir 'kicad10-project-template'
+    if (Test-Path -LiteralPath $templateTarget) {
+        throw "Şablon zaten kurulu: $templateTarget. Güncellemeden önce mevcut klasörü başka bir konuma yedekleyin ve hedefi boşaltın."
+    }
+
+    $templateTemp = Join-Path ([IO.Path]::GetTempPath()) ('kicad-template-' + [guid]::NewGuid())
+    New-Item -ItemType Directory -Path $templateTemp | Out-Null
+    $templateZip = Join-Path $templateTemp 'template.zip'
+    $templateUrl = "https://github.com/donanimkafa/kicad10-project-template/releases/download/$templateVersion/kicad10-project-template.zip"
+    Invoke-WebRequest -Uri $templateUrl -OutFile $templateZip -UseBasicParsing
+    Expand-Archive -LiteralPath $templateZip -DestinationPath $templateTemp
+    $templateSource = Join-Path $templateTemp 'kicad10-project-template'
+    if (-not (Test-Path -LiteralPath (Join-Path $templateSource 'meta\info.html'))) {
+        throw 'İndirilen pakette KiCad şablon tanımı bulunamadı.'
+    }
+    New-Item -ItemType Directory -Path $templateDir -Force | Out-Null
+    Copy-Item -LiteralPath $templateSource -Destination $templateTarget -Recurse
+    Write-Host "Kuruldu: $templateTarget"
+    Write-Host 'KiCad proje seçicisini yeniden açın ve Donanimkafa - KiCad 10 şablonunu seçin.'
+    Write-Host "İndirilen ZIP ve geçici dosyalar: $templateTemp"
+}
+```
+
+Komutlar aynı adlı kurulumun üzerine yazmaz. İndirme veya paket açma hatasında
+işlem durur. İndirilen ZIP ve geçici dosyalar, son satırda gösterilen konumda
+kalır; kurulumdan sonra bu geçici klasörü silebilirsiniz.
+
 ### Şablon paketini hazırlama ve yayımlama
 
 `KiCad Template Package` iş akışı `main` gönderimlerinde, `main` hedefli PR'larda

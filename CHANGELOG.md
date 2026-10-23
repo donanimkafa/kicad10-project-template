@@ -25,6 +25,8 @@ Company: Donanimkafa
 
 ### Added
 
+- Document PowerShell installation from a versioned Release asset, with custom template path guidance and existing-installation protection.
+
 - Build and distribute installable KiCad template ZIPs through a dedicated workflow and template-v* releases, independently of hardware manufacturing releases.
 - Document public template installation, updates, artifact downloads and GitHub template repository setup.
 
